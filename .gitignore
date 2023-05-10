@@ -1,3 +1,9 @@
+# Dist
+dist/
+
+# Types
+CarConfigurator-UI/types/
+
 # Logs
 logs
 *.log
