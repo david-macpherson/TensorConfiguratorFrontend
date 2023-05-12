@@ -2,7 +2,7 @@ name: Releases
 
 on: 
   push:
-    branches: ['master']
+    branches: ['main']
     paths: ['RELEASE_VERSION']
 
 jobs:
