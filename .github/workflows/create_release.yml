@@ -45,7 +45,7 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'tar'
-        filename: '${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz'
+        filename: '${{ github.event.repository.name }}-${{ steps.getversion.outputs.version }}.tar.gz'
         exclusions: ''
 
     - name: Archive Release .zip
@@ -54,7 +54,7 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'zip'
-        filename: '${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip'
+        filename: '${{ github.event.repository.name }}-${{ steps.getversion.outputs.version }}.zip'
         exclusions: ''
 
     - name: "Make the release"
