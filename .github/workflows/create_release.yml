@@ -45,7 +45,7 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'tar'
-        filename: '${{ github.event.repository.name }}-${{ steps.getversion.outputs.version }}.tar.gz'
+        filename: '${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz'
         exclusions: ''
 
     - name: Archive Release .zip
@@ -54,12 +54,12 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'zip'
-        filename: '${{ github.event.repository.name }}-${{ steps.getversion.outputs.version }}.zip'
+        filename: '${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip'
         exclusions: ''
 
     - name: "Make the release"
       uses: ncipollo/release-action@v1
       with:
         tag: "${{ github.ref_name }}-${{ steps.getversion.outputs.version }}"
-        artifacts: "${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip,${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz"
+        artifacts: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip,${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz"
         generateReleaseNotes: true
