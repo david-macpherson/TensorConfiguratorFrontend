@@ -60,6 +60,6 @@ jobs:
     - name: "Make the release"
       uses: ncipollo/release-action@v1
       with:
-        tag: "$${{ steps.getversion.outputs.version }}#${{ github.ref_name }}-{{ github.event.repository.name }}"
+        tag: "${{ steps.getversion.outputs.version }}#${{ github.ref_name }}-${{ github.event.repository.name }}"
         artifacts: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip,${{ github.event.repository.name }}-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz"
         generateReleaseNotes: true
