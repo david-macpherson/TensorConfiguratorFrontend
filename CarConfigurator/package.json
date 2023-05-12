@@ -13,6 +13,7 @@
     "build-dev-all": "cd ../CarConfigurator-UI && npm install && npm run build-dev && cd ../CarConfigurator && npm link ../CarConfigurator-UI && npm run build-dev"
   },
   "devDependencies": {
+    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.2": "0.5.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "html-loader": "^4.2.0",
