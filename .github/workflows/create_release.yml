@@ -37,7 +37,7 @@ jobs:
       run: npm run build-all
 
     - name: Move all content into output directory for archiving
-      run: items=(./dist/www/*) && mkdir TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }} && mv ${items[*]} TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}/
+      run: items=(./CarConfigurator/dist/www/*) && mkdir TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }} && mv ${items[*]} TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}/
 
     - name: Archive Release tar.gz
       uses: thedoctor0/zip-release@0.7.1
