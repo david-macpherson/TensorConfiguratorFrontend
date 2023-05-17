@@ -170,6 +170,9 @@ export class CarConfiguratorStyle {
 			display: 'flex',
 			margin: '2rem'
 		},
+        '.option:hover': {
+            border: '2px solid gold'
+        },
 		'.option img': {
 			display: 'inline',
 			padding: '2rem',
@@ -683,6 +686,9 @@ export class CarConfiguratorStyle {
 			marginBottom: '1rem',
 			display: 'flex'
 		},
+        '.variant-container:hover': {
+            border: '1px solid gold'
+        },
 		'.variant-container img': {
 			display: 'inline',
 			width: '20% !important',
