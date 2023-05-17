@@ -36,6 +36,8 @@ import { Variant } from '../Variants/Variant'
 import { VariantPanel } from '../UI/VariantPanel'
 import { OptionPanel } from '../UI/OptionPanel';
 import { LoggingUtils } from '../Util/LoggingUtils'
+import { VolumeIcon } from '../UI/VolumeIcon';
+import { MicrophoneIcon } from '../UI/MicrophoneIcon';
 /** 
  * Configuration of the internal video QP indicator element.
  * By default, one will be made, but if needed this can be disabled.
@@ -410,6 +412,22 @@ export class CarConfigurator {
             this._options.xrControlsConfig.customElement : undefined;
         if (!!xrButton) xrButton.onclick = () =>
             this.stream.toggleXR();
+
+		// Add mute button to controls
+        const muteButton : VolumeIcon | undefined = 
+            !!controls.volumeIcon ? controls.volumeIcon : undefined;
+        if (!!muteButton) muteButton.onToggled = (muted: boolean) => {
+			// this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
+			//this.stream.setAudioMuted(muted);
+		}
+
+		// Add mic mute button to controls
+        const micMuteButton : MicrophoneIcon | undefined = 
+            !!controls.microphoneIcon ? controls.microphoneIcon : undefined;
+        if (!!micMuteButton) micMuteButton.onToggled = (muted: boolean) => {
+			// this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
+			//this.stream.setMIcrophoneMuted(muted);
+		}
 
 		// Add freeze button to controls
         const playButton : HTMLElement | undefined = 
