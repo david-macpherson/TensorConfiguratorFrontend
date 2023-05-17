@@ -7,6 +7,8 @@ export class MicrophoneIconBase {
    
     _rootElement: HTMLElement;
 
+    public onToggled: (muted: boolean) => void;
+
 	public get rootElement() {
         return this._rootElement;
     }
@@ -33,7 +35,8 @@ export class MicrophoneIconBase {
      * Handles the Volume button on change
      */
     onMuteChange() {
-        this.isMute = !this.isMute
+        this.isMute = !this.isMute;
+        this.onToggled(this.isMute);
     }
 }
 
