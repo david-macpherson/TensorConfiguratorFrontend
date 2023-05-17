@@ -2,7 +2,7 @@ name: Releases
 
 on: 
   push:
-    branches: ['master']
+    branches: ['5.2']
     paths: ['RELEASE_VERSION']
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
       run: npm run build-all
 
     - name: Move all content into output directory for archiving
-      run: items=(./dist/www/*) && mkdir TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }} && mv ${items[*]} TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}/
+      run: items=(./CarConfigurator/dist/www/*) && mkdir TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }} && mv ${items[*]} TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}/
 
     - name: Archive Release tar.gz
       uses: thedoctor0/zip-release@0.7.1
@@ -45,7 +45,7 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'tar'
-        filename: '${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz'
+        filename: '${{ steps.getversion.outputs.version }}-${{ github.ref_name }}-${{ github.event.repository.name }}.tar.gz'
         exclusions: ''
 
     - name: Archive Release .zip
@@ -54,12 +54,12 @@ jobs:
         directory: '.'
         path: 'TensorConfiguratorFrontend-${{ github.ref_name }}-${{ steps.getversion.outputs.version }}'
         type: 'zip'
-        filename: '${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip'
+        filename: '${{ steps.getversion.outputs.version }}-${{ github.ref_name }}-${{ github.event.repository.name }}.zip'
         exclusions: ''
 
     - name: "Make the release"
       uses: ncipollo/release-action@v1
       with:
-        tag: "${{ github.ref_name }}-${{ steps.getversion.outputs.version }}"
-        artifacts: "${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.zip,${{ github.ref_name }}-${{ steps.getversion.outputs.version }}.tar.gz"
+        tag: "${{ steps.getversion.outputs.version }}-${{ github.ref_name }}-${{ github.event.repository.name }}"
+        artifacts: "${{ steps.getversion.outputs.version }}-${{ github.ref_name }}-${{ github.event.repository.name }}.zip,${{ steps.getversion.outputs.version }}-${{ github.ref_name }}-${{ github.event.repository.name }}.tar.gz"
         generateReleaseNotes: true
