@@ -126,6 +126,13 @@ export class CarConfigurator {
         
         this.stream = options.stream;
         this.onColorModeChanged = options.onColorModeChanged;
+
+        // default to hovering mouse unless otherwise specified in the url
+        const urlParams = new URLSearchParams(window.location.search);
+        if (!urlParams.has(Flags.HoveringMouseMode)) {
+            this.stream.config.setFlagEnabled(Flags.HoveringMouseMode, true);
+        }
+        
         this.configUI = new ConfigUI(this.stream.config);
 
         this.createOverlays();
