@@ -2,7 +2,7 @@
   "name": "@tensorworks/tensorconfigurator-frontend",
   "version": "0.0.1",
   "description": "",
-  "main": "./src/player.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "npx webpack --config webpack.prod.js",
     "build-dev": "npx webpack --config webpack.dev.js",
