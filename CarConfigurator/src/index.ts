@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 import { Config, PixelStreaming, MessageRecv, TextParameters, Flags } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
-import { CarConfiguratorStyle } from 'carconfigurator-ui';
+import { CarConfiguratorStyle, UIElementCreationMode } from 'carconfigurator-ui';
 import { SPSApplication } from "./SPSApplication";
 
 const CarConfiguratorStyles =
@@ -43,12 +43,22 @@ document.body.onload = function () {
 	// Create and append our application
 	const spsApplication = new SPSApplication({
 		stream,
-		onColorModeChanged: (isLightMode) => CarConfiguratorStyles.setColorMode(isLightMode) /* Light/Dark mode support. */
+		onColorModeChanged: (isLightMode) => CarConfiguratorStyles.setColorMode(isLightMode) /* Light/Dark mode support. */,
+        volumeControlsConfig: {
+            creationMode: UIElementCreationMode.Disable
+        },
+        microphoneControlsConfig: {
+            creationMode: UIElementCreationMode.Disable
+        }
 	});
 
     // Only show options bar once stream starts
     stream.addEventListener("playStream", () => {
-        spsApplication.show();
+        spsApplication.showOptions();
+    })
+
+    stream.addEventListener("webRtcDisconnected", () => {
+        spsApplication.hideOptions();
     })
 
 	document.body.appendChild(spsApplication.rootElement);

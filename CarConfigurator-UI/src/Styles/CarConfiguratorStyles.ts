@@ -92,10 +92,7 @@ export class CarConfiguratorStyle {
             fontSize: '0.75rem',
             letterSpacing: '0.75px',
             position: 'absolute',
-            transform: 'translateX(-50%)',
-            top: '125%',
-            zIndex: '20',
-            left: '55%'
+            zIndex: '20'
         },
         '.UiTool:hover .tooltiptext': {
             visibility: 'visible',
@@ -161,15 +158,16 @@ export class CarConfiguratorStyle {
             fontFamily: "'Michroma', sans-serif",
             pointerEvents: 'all',
             display: 'flex',
-			color: 'white'
+			color: 'white',
+            transition: '0.3s ease',
         },
 		'.option': {
-			flexBasis: 'calc( 100% / 5 )',
+			flexBasis: 'calc( 100% / 6 )',
 			backgroundColor: 'rgba(0,0,0,0.8)',
 			border: '2px solid white',
-			'border-radius': '1rem',
+			borderRadius: '1rem',
 			display: 'flex',
-			margin: '2rem'
+            margin: 'auto'
 		},
         '.option:hover': {
             border: '2px solid gold'
@@ -184,7 +182,7 @@ export class CarConfiguratorStyle {
 		},
 		'.option div': {
 			display: 'flex',
-			margin: '2rem',
+			margin: 'auto',
 			alignItems: 'center'
 		},
         '#controls': {
@@ -207,12 +205,41 @@ export class CarConfiguratorStyle {
             lineHeight: '1.75rem',
             padding: '0.5rem'
         },
+        '@media (max-width: 1023px)': {
+            '#controls>*': {
+                marginRight: '0 !important',
+                marginLeft: '0 !important'
+            },
+            '#uiFeatures button': {
+                float: 'none !important',
+            },
+            '.option div': {
+                display: 'none'
+            },
+            '.option img': {
+                border: 'none',
+                margin: 'auto',
+                padding: '0',
+                width: '50% !important',
+                marginTop: '12.5%',
+                marginBottom: '12.5%'
+            },
+            '.UiTool .tooltiptext': {
+                transform: 'translateY(-50%)',
+                top: '55%',
+                right: '125%',
+            }
+        },
+        '@media (min-width: 1024px)': {
+            '.UiTool .tooltiptext': {
+                transform: 'translateX(-50%)',
+                top: '125%',
+                left: '55%'
+            }
+        },
         '#controls #additionalinfo': {
             textAlign: 'center',
             fontFamily: "'Montserrat', sans-serif"
-        },
-        '#fullscreen-btn': {
-            padding: '0.75rem !important'
         },
         '#minimizeIcon': {
             display: 'none'
@@ -273,10 +300,6 @@ export class CarConfiguratorStyle {
         '.btn-flat:focus': {
             outline: 'none'
         },
-        '#uiFeatures img': {
-            width: '100%',
-            height: '100%'
-        },
         '.panel-wrap': {
             position: 'absolute',
             top: '0',
@@ -284,15 +307,16 @@ export class CarConfiguratorStyle {
             left: '0',
             height: '100%',
             minWidth: '20vw',
-            maxWidth: '100vw',
+            maxWidth: '90vw',
             transform: 'translateX(-100%)',
             transition: '.3s ease-out',
             pointerEvents: 'all',
             backdropFilter: 'blur(10px)',
-            webkitBackdropFilter: 'blur(10px)',
+            '-webkit-backdrop-filter': 'blur(10px)',
             overflowY: 'auto',
             overflowX: 'hidden',
-            backgroundColor: 'var(--color0)'
+            backgroundColor: 'var(--color0)',
+            '-webkit-overflow-scrolling': 'touch'
         },
         '.panel-wrap-visible': {
             transform: 'translateX(0%)'
@@ -368,7 +392,8 @@ export class CarConfiguratorStyle {
                 backgroundColor: 'var(--color1)',
                 alignItems: 'center',
                 justifyContent: 'center',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                textAlign: 'center'
             },
         '.clickableState': {
             alignItems: 'center',
@@ -682,6 +707,9 @@ export class CarConfiguratorStyle {
 		'.invisible': {
 			'display': 'none !important'
 		},
+        '.opacity': {
+			'opacity': '0'
+		},
 		'.variant-container': {
 			flexBasis: 'calc( 100% / 5 )',
 			backgroundColor: 'rgba(var(--color13), 0.2)',
@@ -695,7 +723,7 @@ export class CarConfiguratorStyle {
         },
 		'.variant-container img': {
 			display: 'inline',
-			width: '20% !important',
+			width: '20%',
 			height: 'auto !important',
 			borderRight: '1px solid rgb(var(--color13))',
 			'border-top-left-radius': '1rem',

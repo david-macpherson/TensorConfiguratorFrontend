@@ -71,6 +71,10 @@ export interface UIOptions {
     xrControlsConfig? : UIElementConfig,
     /** Configuration of the video QP indicator. */
     videoQpIndicatorConfig? : VideoQPIndicatorConfig
+    /** If needed, volumen button can be external or disabled. */
+    volumeControlsConfig? : UIElementConfig,
+    /** If needed, microphone button can be external or disabled. */
+    microphoneControlsConfig? : UIElementConfig,
 }
 
 /**
@@ -306,7 +310,10 @@ export class CarConfigurator {
                 ? this._options.settingsPanelConfig.visibilityButtonConfig
                 : undefined,
             fullscreenButtonType: this._options.fullScreenControlsConfig,
-            xrIconType: this._options.xrControlsConfig
+            xrIconType: this._options.xrControlsConfig,
+            microphoneIconType: this._options.microphoneControlsConfig,
+            volumeIconType: this._options.volumeControlsConfig
+            
         }
         // Setup controls
         const controls = new Controls(controlsUIConfig);
@@ -706,6 +713,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.settingsPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
     /**
@@ -720,6 +735,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.statsPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -734,6 +757,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.logsPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -748,6 +779,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.paintPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -762,6 +801,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.wheelPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -776,6 +823,14 @@ export class CarConfigurator {
 		this.trimPanel.toggleVisibility();
 		this.leatherPanel.hide();
 		this.seatPanel.hide();
+
+        if (this.trimPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -790,6 +845,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.toggleVisibility();
 		this.seatPanel.hide();
+
+        if (this.leatherPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
 	/**
@@ -804,6 +867,14 @@ export class CarConfigurator {
 		this.trimPanel.hide();
 		this.leatherPanel.hide();
 		this.seatPanel.toggleVisibility();
+
+        if (this.seatPanel.rootElement.classList.contains('panel-wrap-visible')) {
+            this.optionsBar.classList.add('opacity')
+        }
+        else 
+        {
+            this.optionsBar.classList.remove('opacity')
+        }
     }
 
     /**
@@ -1006,11 +1077,11 @@ export class CarConfigurator {
         }
     }
 
-    public hide() {
+    public hideOptions() {
         this.optionsBar.classList.add('invisible');
     }
 
-    public show() {
+    public showOptions() {
         this.optionsBar.classList.remove('invisible');
     }
 }
