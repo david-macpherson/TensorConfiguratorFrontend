@@ -3,7 +3,7 @@
 import type {
     SettingText,
     TextParametersIds
-} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
+} from 'carconfigurator-lib';
 import { SettingUIBase } from './SettingUIBase';
 
 export class SettingUIText<

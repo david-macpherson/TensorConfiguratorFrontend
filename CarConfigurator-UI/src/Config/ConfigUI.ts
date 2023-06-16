@@ -17,7 +17,7 @@ import {
     SettingOption,
     Logger,
     SettingBase
-} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
+} from 'carconfigurator-lib';
 import { SettingUIFlag } from './SettingUIFlag';
 import { SettingUINumber } from './SettingUINumber';
 import { SettingUIText } from './SettingUIText';

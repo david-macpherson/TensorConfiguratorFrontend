@@ -174,8 +174,8 @@ export class CarConfiguratorStyle {
         },
 		'.option img': {
 			display: 'inline',
-			padding: '2rem',
-			width: '20% !important',
+			padding: '1rem',
+			width: '30% !important',
 			height: 'auto !important',
 			borderRight: '2px solid',
             borderColor: 'inherit'
@@ -213,17 +213,6 @@ export class CarConfiguratorStyle {
             '#uiFeatures button': {
                 float: 'none !important',
             },
-            '.option div': {
-                display: 'none'
-            },
-            '.option img': {
-                border: 'none',
-                margin: 'auto',
-                padding: '0',
-                width: '50% !important',
-                marginTop: '12.5%',
-                marginBottom: '12.5%'
-            },
             '.UiTool .tooltiptext': {
                 transform: 'translateY(-50%)',
                 top: '55%',
@@ -237,6 +226,23 @@ export class CarConfiguratorStyle {
                 left: '55%'
             }
         },
+        '@media (max-width: 1365px)': {
+            '.option div': {
+                display: 'none'
+            },
+            '.option img': {
+                border: 'none',
+                margin: 'auto',
+                padding: '0',
+                width: '50% !important',
+                marginTop: '12.5%',
+                marginBottom: '12.5%'
+            },
+        },
+        '@media (min-width: 1366px)': {
+        },
+
+
         '#controls #additionalinfo': {
             textAlign: 'center',
             fontFamily: "'Montserrat', sans-serif"
@@ -315,8 +321,7 @@ export class CarConfiguratorStyle {
             '-webkit-backdrop-filter': 'blur(10px)',
             overflowY: 'auto',
             overflowX: 'hidden',
-            backgroundColor: 'var(--color0)',
-            '-webkit-overflow-scrolling': 'touch'
+            backgroundColor: 'var(--color0)'
         },
         '.panel-wrap-visible': {
             transform: 'translateX(0%)'
@@ -449,7 +454,7 @@ export class CarConfiguratorStyle {
         },
         '.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl+.tgl-slider':
             {
-                webkitBoxSizing: 'border-box',
+                '-webkit-box-sizing': 'border-box',
                 boxSizing: 'border-box'
             },
         '.tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl+.tgl-slider::-moz-selection':
@@ -485,14 +490,14 @@ export class CarConfiguratorStyle {
         },
         '.tgl-flat+.tgl-slider': {
             padding: '2px',
-            webkitTransition: 'all .2s ease',
+            '-webkit-transition': 'all .2s ease',
             transition: 'all .2s ease',
             background: 'var(--color6)',
             border: '3px solid var(--color7)',
             borderRadius: '2em'
         },
         '.tgl-flat+.tgl-slider:after': {
-            webkitTransition: 'all .2s ease',
+            '-webkit-transition': 'all .2s ease',
             transition: 'all .2s ease',
             background: 'var(--color7)',
             content: '""',
