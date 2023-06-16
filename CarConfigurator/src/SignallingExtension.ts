@@ -171,7 +171,6 @@ export class SPSSignalling {
 				} else {
 					instanceStateMessage = instanceState.details;
 				}
-				instanceStateMessage = "Step 2/3: " + instanceStateMessage;
 				break;
 			case InstanceState.READY:
 				if (instanceState.details == undefined || instanceState.details == null) {
@@ -179,7 +178,6 @@ export class SPSSignalling {
 				} else {
 					instanceStateMessage = "Ready: " + instanceState.details;
 				}
-				instanceStateMessage = "Step 3/3: " + instanceStateMessage;
 				break;
 			default:
 				instanceStateMessage = "Unhandled Instance State" + instanceState.state + " " + instanceState.details;
@@ -204,7 +202,7 @@ export class SPSSignalling {
 		// get the response type
 		switch (authResponse.outcome) {
 			case MessageAuthResponseOutcomeType.AUTHENTICATED:
-				instanceStateMessage = "Step 1/3: Requesting Instance";
+				instanceStateMessage = "Requesting Instance";
 				break;
 			case MessageAuthResponseOutcomeType.INVALID_TOKEN:
 				instanceStateMessage = "Invalid Token: " + authResponse.error;
