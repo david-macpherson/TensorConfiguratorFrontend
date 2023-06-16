@@ -29,7 +29,7 @@ class ScalablePixelStreaming extends PixelStreaming {
 
 document.body.onload = function () {
 	// Create a config object. We default to sending the WebRTC offer from the browser as true, TimeoutIfIdle to true, AutoConnect to false and MaxReconnectAttempts to 0
-	const config = new Config({ useUrlParams: true, initialSettings: { OfferToReceive: true, TimeoutIfIdle: false, AutoConnect: false, MaxReconnectAttempts: 0 } });
+	const config = new Config({ useUrlParams: true, initialSettings: { OfferToReceive: true, TimeoutIfIdle: false, AutoConnect: false, MaxReconnectAttempts: 0, MatchViewportRes: true } });
 
 	// make usage of WEBSOCKET_URL if it is not empty
 	let webSocketAddress = "wss://sps.tenant-tensorworks-demo.lga1.ingress.coreweave.cloud/car-config/ws";

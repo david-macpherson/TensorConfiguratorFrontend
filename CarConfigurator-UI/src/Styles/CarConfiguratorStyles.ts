@@ -155,7 +155,7 @@ export class CarConfiguratorStyle {
         },
 		'#optionsBar': {
             position: 'absolute',
-            bottom: '3%',
+            bottom: '5%',
             left: '12.5%',
 			width: '75%',
             fontFamily: "'Michroma', sans-serif",
