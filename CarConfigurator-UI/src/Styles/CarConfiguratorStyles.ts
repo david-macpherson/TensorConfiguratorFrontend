@@ -99,7 +99,7 @@ export class CarConfiguratorStyle {
         },
         '.UiTool:hover .tooltiptext': {
             visibility: 'visible',
-            backgroundColor: 'rgba(var(--color13), 0.2)'
+            backgroundColor: 'var(--color0)'
         },
         '#connection .tooltiptext': {
             top: '125%',
