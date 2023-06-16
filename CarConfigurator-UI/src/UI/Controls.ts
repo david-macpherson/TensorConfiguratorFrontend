@@ -8,7 +8,7 @@ import { VolumeIcon } from './VolumeIcon';
 import { MicrophoneIcon } from './MicrophoneIcon';
 import { PlayIcon } from './PlayIcon'
 import { LogsIcon } from './LogsIcon';
-import { WebXRController } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+import { WebXRController } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
 import { UIElementConfig, UIElementCreationMode } from '../UI/UIConfigurationTypes'
 
 /**

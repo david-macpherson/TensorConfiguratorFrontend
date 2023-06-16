@@ -8,7 +8,7 @@ import {
     LatencyTestResults,
     InitialSettings,
     MessageStreamerList
-} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
 import { OverlayBase } from '../Overlay/BaseOverlay';
 import { ActionOverlay } from '../Overlay/ActionOverlay';
 import { TextOverlay } from '../Overlay/TextOverlay';
@@ -169,6 +169,7 @@ export class CarConfigurator {
 
 		this.optionsBar = document.createElement('div');
 		this.optionsBar.id = 'optionsBar'
+        this.optionsBar.classList.add('invisible');
 		this.uiFeaturesElement.appendChild(this.optionsBar);
 
 		this.paintButton = new OptionPanel('Paint', './images/T_Icon_Paint.PNG');
@@ -1003,5 +1004,13 @@ export class CarConfigurator {
         if (this.onColorModeChanged) {
             this.onColorModeChanged(isLightMode);
         }
+    }
+
+    public hide() {
+        this.optionsBar.classList.add('invisible');
+    }
+
+    public show() {
+        this.optionsBar.classList.remove('invisible');
     }
 }

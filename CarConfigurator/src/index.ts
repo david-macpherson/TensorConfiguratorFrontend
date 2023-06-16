@@ -45,5 +45,11 @@ document.body.onload = function () {
 		stream,
 		onColorModeChanged: (isLightMode) => CarConfiguratorStyles.setColorMode(isLightMode) /* Light/Dark mode support. */
 	});
+
+    // Only show options bar once stream starts
+    stream.addEventListener("playStream", () => {
+        application.show();
+    })
+
 	document.body.appendChild(spsApplication.rootElement);
 }

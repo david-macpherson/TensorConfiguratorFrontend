@@ -92,13 +92,14 @@ export class CarConfiguratorStyle {
             fontSize: '0.75rem',
             letterSpacing: '0.75px',
             position: 'absolute',
-            transform: 'translateX(-60%)',
+            transform: 'translateX(-50%)',
             top: '125%',
-            zIndex: '20'
+            zIndex: '20',
+            left: '55%'
         },
         '.UiTool:hover .tooltiptext': {
             visibility: 'visible',
-            backgroundColor: 'var(--color7)'
+            backgroundColor: 'rgba(var(--color13), 0.2)'
         },
         '#connection .tooltiptext': {
             top: '125%',
@@ -178,7 +179,8 @@ export class CarConfiguratorStyle {
 			padding: '2rem',
 			width: '20% !important',
 			height: 'auto !important',
-			borderRight: '2px solid white'
+			borderRight: '2px solid',
+            borderColor: 'inherit'
 		},
 		'.option div': {
 			display: 'flex',
@@ -193,7 +195,8 @@ export class CarConfiguratorStyle {
             pointerEvents: 'all',
             display: 'block',
 			borderRadius: '0.6rem',
-			backgroundColor: 'var(--color7)',
+			backgroundColor: 'rgba(var(--color13), 0.2)',
+            border: '1px solid rgb(var(--color13))'
         },
         '#controls>*': {
             marginRight: '0.5rem',
@@ -218,25 +221,26 @@ export class CarConfiguratorStyle {
             cursor: 'pointer'
         },
         '#uiFeatures button': {
-            backgroundColor: 'var(--color7)',
-            border: '1px solid var(--color7)',
+            background: 'none',
+            border: '2px solid rgba(0,0,0,0)',
             color: 'var(--color2)',
             position: 'relative',
             width: '3.1rem',
             height: '3.1rem',
-            padding: '0.7rem',
+            padding: '0.75rem',
             textAlign: 'center',
 			float: 'left'
         },
         '#uiFeatures button:hover': {
-            backgroundColor: 'var(--color3)',
+            backgroundColor: 'rgba(var(--color15), 0.2)',
+            border: '2px solid rgb(var(--color15))',
             transition: '0.25s ease',
             paddingLeft: '0.75rem',
             paddingTop: '0.75rem'
         },
         '#uiFeatures button:active': {
-            border: '3px solid var(--color3)',
-            backgroundColor: 'var(--color7)',
+            border: '2px solid rgb(var(--color15))',
+            backgroundColor: 'rgba(var(--color13), 0.2)',
             paddingLeft: '0.75rem',
             paddingTop: '0.75rem'
         },
@@ -625,58 +629,58 @@ export class CarConfiguratorStyle {
         '#logsContainer button:hover': {
             backgroundColor: 'rgba(var(--color15), 0.2)',
             transition: '0.25s ease',
-			border: '3px solid rgb(var(--color15))',
+			border: '2px solid rgb(var(--color15))',
 			padding: '0.5rem',
         },
         '#logsContainer button:active': {
-            border: '3px solid rgb(var(--color15))',
+            border: '2px solid rgb(var(--color15))',
             backgroundColor: 'rgba(var(--color13), 0.2)',
 			padding: '0.5rem',
         },
 		'#errorFilter:hover': {
 			backgroundColor: 'rgba(var(--color12), 0.2) !important',
-			border: '3px solid rgb(var(--color12)) !important',
+			border: '2px solid rgb(var(--color12)) !important',
 		},
 		'#errorFilter:active': {
 			backgroundColor: 'rgba(var(--color12), 0.2) !important',
-			border: '3px solid rgb(var(--color12)) !important',
+			border: '2px solid rgb(var(--color12)) !important',
 		},
 		'#errorFilter.active': {
 			backgroundColor: 'rgba(var(--color12), 0.2) !important',
-			border: '3px solid rgb(var(--color12)) !important',
+			border: '2px solid rgb(var(--color12)) !important',
 		},
 		'#warnFilter:hover': {
 			backgroundColor: 'rgba(var(--color14), 0.2) !important',
-			border: '3px solid rgb(var(--color14)) !important',
+			border: '2px solid rgb(var(--color14)) !important',
 		},
 		'#warnFilter:active': {
 			backgroundColor: 'rgba(var(--color14), 0.2) !important',
-			border: '3px solid rgb(var(--color14)) !important',
+			border: '2px solid rgb(var(--color14)) !important',
 		},
 		'#warnFilter.active': {
 			backgroundColor: 'rgba(var(--color14), 0.2) !important',
-			border: '3px solid rgb(var(--color14)) !important',
+			border: '2px solid rgb(var(--color14)) !important',
 		},
 		'#debugFilter': {
 		},
 		'#debugFilter.active': {
-			border: '3px solid rgb(var(--color15))',
+			border: '2px solid rgb(var(--color15))',
             backgroundColor: 'rgba(var(--color15), 0.2)',
 		},
 		'#infoFilter': {
 		},
 		'#infoFilter.active': {
-			border: '3px solid rgb(var(--color15))',
+			border: '2px solid rgb(var(--color15))',
             backgroundColor: 'rgba(var(--color15), 0.2)',
 		},
 		'#logFilter': {
 		},
 		'#logFilter.active': {
-			border: '3px solid rgb(var(--color15))',
+			border: '2px solid rgb(var(--color15))',
             backgroundColor: 'rgba(var(--color15), 0.2)',
 		},
 		'.invisible': {
-			'display': 'none'
+			'display': 'none !important'
 		},
 		'.variant-container': {
 			flexBasis: 'calc( 100% / 5 )',
