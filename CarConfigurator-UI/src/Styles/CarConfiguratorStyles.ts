@@ -195,7 +195,7 @@ export class CarConfiguratorStyle {
             pointerEvents: 'all',
             display: 'block',
 			borderRadius: '0.6rem',
-			backgroundColor: 'rgba(var(--color13), 0.2)',
+			backgroundColor: 'var(--color0);',
             border: '1px solid rgb(var(--color13))'
         },
         '#controls>*': {

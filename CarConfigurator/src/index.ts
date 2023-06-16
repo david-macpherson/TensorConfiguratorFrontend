@@ -48,7 +48,7 @@ document.body.onload = function () {
 
     // Only show options bar once stream starts
     stream.addEventListener("playStream", () => {
-        application.show();
+        spsApplication.show();
     })
 
 	document.body.appendChild(spsApplication.rootElement);
