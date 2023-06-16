@@ -9,8 +9,8 @@
     "watch": "npx webpack --watch",
     "serve": "webpack serve --config webpack.dev.js",
     "serve-prod": "webpack serve --config webpack.prod.js",
-    "build-all": "cd ../CarConfigurator-UI && npm run build-all && cd ../CarConfigurator && npm install && npm link ../CarConfigurator-Lib && npm link ../CarConfigurator-UI && npm run build",
-    "build-dev-all": "cd ../CarConfigurator-UI && npm run build-dev-all && cd ../CarConfigurator && npm install && npm link ../CarConfigurator-Lib && npm link ../CarConfigurator-UI && npm run build-dev"
+    "build-all": "cd ../CarConfigurator-UI && npm run build-all && cd ../CarConfigurator && npm install && npm link ../CarConfigurator-UI ../CarConfigurator-Lib && npm run build",
+    "build-dev-all": "cd ../CarConfigurator-UI && npm run build-dev-all && cd ../CarConfigurator && npm install && npm link ../CarConfigurator-UI ../CarConfigurator-Lib && npm run build-dev"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
@@ -23,8 +23,5 @@
     "webpack": "^5.76.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.1"
-  },
-  "dependencies": {
-    "carconfigurator-lib": "file:../CarConfigurator-Lib"
   }
 }

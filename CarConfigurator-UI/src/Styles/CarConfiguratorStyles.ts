@@ -728,7 +728,7 @@ export class CarConfiguratorStyle {
         },
 		'.variant-container img': {
 			display: 'inline',
-			width: '20%',
+			width: 'auto',
 			height: 'auto !important',
 			borderRight: '1px solid rgb(var(--color13))',
 			'border-top-left-radius': '1rem',
@@ -737,7 +737,7 @@ export class CarConfiguratorStyle {
 		'.variant-container div': {
 			display: 'flex',
 			alignItems: 'center',
-			margin: '2rem'
+			margin: '2rem 1rem'
 		},
     };
 
