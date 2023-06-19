@@ -25,9 +25,9 @@ import { StatsPanel } from '../UI/StatsPanel';
 import { LogsPanel } from '../UI/LogsPanel';
 import { VideoQpIndicator } from '../UI/VideoQpIndicator';
 import { ConfigUI, LightMode } from '../Config/ConfigUI';
-import { 
-    UIElementCreationMode, 
-    PanelConfiguration, 
+import {
+    UIElementCreationMode,
+    PanelConfiguration,
     isPanelEnabled,
     UIElementConfig
 } from '../UI/UIConfigurationTypes'
@@ -62,19 +62,19 @@ export interface UIOptions {
     /** By default, a stats panel and associate visibility toggle button will be made.
       * If needed, this behaviour can be configured. */
     statsPanelConfig?: PanelConfiguration;
-	/** By default, a log panel and associate visibility toggle button will be made.
+    /** By default, a log panel and associate visibility toggle button will be made.
       * If needed, this behaviour can be configured. */
     logsPanelConfig?: PanelConfiguration;
     /** If needed, the full screen button can be external or disabled. */
-    fullScreenControlsConfig? : UIElementConfig,
+    fullScreenControlsConfig?: UIElementConfig,
     /** If needed, XR button can be external or disabled. */
-    xrControlsConfig? : UIElementConfig,
+    xrControlsConfig?: UIElementConfig,
     /** Configuration of the video QP indicator. */
-    videoQpIndicatorConfig? : VideoQPIndicatorConfig
+    videoQpIndicatorConfig?: VideoQPIndicatorConfig
     /** If needed, volumen button can be external or disabled. */
-    volumeControlsConfig? : UIElementConfig,
+    volumeControlsConfig?: UIElementConfig,
     /** If needed, microphone button can be external or disabled. */
-    microphoneControlsConfig? : UIElementConfig,
+    microphoneControlsConfig?: UIElementConfig,
 }
 
 /**
@@ -101,33 +101,33 @@ export class CarConfigurator {
 
     settingsPanel: SettingsPanel;
     statsPanel: StatsPanel;
-	logsPanel: LogsPanel;
-	paintPanel: VariantPanel;
-	wheelPanel: VariantPanel;
-	trimPanel: VariantPanel;
-	leatherPanel: VariantPanel;
-	seatPanel: VariantPanel;
+    logsPanel: LogsPanel;
+    paintPanel: VariantPanel;
+    wheelPanel: VariantPanel;
+    trimPanel: VariantPanel;
+    leatherPanel: VariantPanel;
+    seatPanel: VariantPanel;
     videoQpIndicator: VideoQpIndicator;
 
-	optionsBar: HTMLElement;
-	paintButton: OptionPanel;
-	wheelButton: OptionPanel;
-	trimButton: OptionPanel;
-	leatherButton: OptionPanel;
-	seatButton: OptionPanel;
+    optionsBar: HTMLElement;
+    paintButton: OptionPanel;
+    wheelButton: OptionPanel;
+    trimButton: OptionPanel;
+    leatherButton: OptionPanel;
+    seatButton: OptionPanel;
 
     configUI: ConfigUI;
 
     onColorModeChanged: UIOptions["onColorModeChanged"];
 
-    protected _options : UIOptions;
+    protected _options: UIOptions;
 
     /**
      * @param options - Initialization options
      */
     constructor(options: UIOptions) {
         this._options = options;
-        
+
         this.stream = options.stream;
         this.onColorModeChanged = options.onColorModeChanged;
         this.configUI = new ConfigUI(this.stream.config);
@@ -139,7 +139,7 @@ export class CarConfigurator {
             this.statsPanel = new StatsPanel();
             this.uiFeaturesElement.appendChild(this.statsPanel.rootElement);
         }
-        
+
         if (isPanelEnabled(options.settingsPanelConfig)) {
             // Add settings panel
             this.settingsPanel = new SettingsPanel();
@@ -147,49 +147,49 @@ export class CarConfigurator {
             this.configureSettings();
         }
 
-		if (isPanelEnabled(options.logsPanelConfig)) {
+        if (isPanelEnabled(options.logsPanelConfig)) {
             // Add logs panel
             this.logsPanel = new LogsPanel();
             this.uiFeaturesElement.appendChild(this.logsPanel.rootElement);
-			LoggingUtils.setupLoggingOverrides(this.logsPanel.logsContentElement);
+            LoggingUtils.setupLoggingOverrides(this.logsPanel.logsContentElement);
         }
 
-		this.paintPanel = new VariantPanel('Paint');
-		this.uiFeaturesElement.appendChild(this.paintPanel.rootElement);
-		this.wheelPanel = new VariantPanel('Wheels');
-		this.uiFeaturesElement.appendChild(this.wheelPanel.rootElement);
-		this.trimPanel = new VariantPanel('Trim');
-		this.uiFeaturesElement.appendChild(this.trimPanel.rootElement);
-		this.leatherPanel = new VariantPanel('Leather');
-		this.uiFeaturesElement.appendChild(this.leatherPanel.rootElement);
-		this.seatPanel = new VariantPanel('Seats');
-		this.uiFeaturesElement.appendChild(this.seatPanel.rootElement);
-        
+        this.paintPanel = new VariantPanel('Paint');
+        this.uiFeaturesElement.appendChild(this.paintPanel.rootElement);
+        this.wheelPanel = new VariantPanel('Wheels');
+        this.uiFeaturesElement.appendChild(this.wheelPanel.rootElement);
+        this.trimPanel = new VariantPanel('Trim');
+        this.uiFeaturesElement.appendChild(this.trimPanel.rootElement);
+        this.leatherPanel = new VariantPanel('Leather');
+        this.uiFeaturesElement.appendChild(this.leatherPanel.rootElement);
+        this.seatPanel = new VariantPanel('Seats');
+        this.uiFeaturesElement.appendChild(this.seatPanel.rootElement);
+
         if (!options.videoQpIndicatorConfig || !options.videoQpIndicatorConfig.disableIndicator) {
             // Add the video stream QP indicator
             this.videoQpIndicator = new VideoQpIndicator();
             this.uiFeaturesElement.appendChild(this.videoQpIndicator.rootElement);
         }
 
-		this.optionsBar = document.createElement('div');
-		this.optionsBar.id = 'optionsBar'
+        this.optionsBar = document.createElement('div');
+        this.optionsBar.id = 'optionsBar'
         this.optionsBar.classList.add('invisible');
-		this.uiFeaturesElement.appendChild(this.optionsBar);
+        this.uiFeaturesElement.appendChild(this.optionsBar);
 
-		this.paintButton = new OptionPanel('Paint', './images/T_Icon_Paint.PNG');
-		this.optionsBar.appendChild(this.paintButton.rootElement);
+        this.paintButton = new OptionPanel('Paint', './car-images/T_Icon_Paint.PNG');
+        this.optionsBar.appendChild(this.paintButton.rootElement);
 
-		this.wheelButton = new OptionPanel('Wheels', './images/T_Icon_Rim.PNG');
-		this.optionsBar.appendChild(this.wheelButton.rootElement);
+        this.wheelButton = new OptionPanel('Wheels', './car-images/T_Icon_Rim.PNG');
+        this.optionsBar.appendChild(this.wheelButton.rootElement);
 
-		this.trimButton = new OptionPanel('Trim', './images/T_Icon_Trim.PNG');
-		this.optionsBar.appendChild(this.trimButton.rootElement);
+        this.trimButton = new OptionPanel('Trim', './car-images/T_Icon_Trim.PNG');
+        this.optionsBar.appendChild(this.trimButton.rootElement);
 
-		this.leatherButton = new OptionPanel('Leather', './images/T_Icon_Leather.PNG');
-		this.optionsBar.appendChild(this.leatherButton.rootElement);
+        this.leatherButton = new OptionPanel('Leather', './car-images/T_Icon_Leather.PNG');
+        this.optionsBar.appendChild(this.leatherButton.rootElement);
 
-		this.seatButton = new OptionPanel('Seats', './images/T_Icon_Seats.PNG');
-		this.optionsBar.appendChild(this.seatButton.rootElement);
+        this.seatButton = new OptionPanel('Seats', './car-images/T_Icon_Seats.PNG');
+        this.optionsBar.appendChild(this.seatButton.rootElement);
 
 
         this.createButtons();
@@ -200,72 +200,72 @@ export class CarConfigurator {
 
         this.setColorMode(this.configUI.isCustomFlagEnabled(LightMode));
 
-		const paintVariants = new Map<string, string>();
-		paintVariants.set('Red', './images/paint0.png');
-		paintVariants.set('Black', './images/paint1.png');
-		paintVariants.set('White', './images/paint2.png');
-		paintVariants.set('Grey', './images/paint3.png');
-		paintVariants.set('Blue', './images/paint4.png');
+        const paintVariants = new Map<string, string>();
+        paintVariants.set('Red', './car-images/paint0.png');
+        paintVariants.set('Black', './car-images/paint1.png');
+        paintVariants.set('White', './car-images/paint2.png');
+        paintVariants.set('Grey', './car-images/paint3.png');
+        paintVariants.set('Blue', './car-images/paint4.png');
 
-		const paint = new Variant(paintVariants);
-		paint.populateVariants(this.paintPanel.variantContentElement, (index: number) => {
-			let payload = { Cmd: "variant" };
-			const body = { SetIndex: '0', Index: index.toString() }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
-		});
+        const paint = new Variant(paintVariants);
+        paint.populateVariants(this.paintPanel.variantContentElement, (index: number) => {
+            let payload = { Cmd: "variant" };
+            const body = { SetIndex: '0', Index: index.toString() }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
+        });
 
-		const wheelVariants = new Map<string, string>();
-		wheelVariants.set('20" Pylon Arm', './images/wheel0.png');
-		wheelVariants.set('20" Parallel Spoke', './images/wheel1.png');
-		wheelVariants.set('19" V-Spoke', './images/wheel2.png');
+        const wheelVariants = new Map<string, string>();
+        wheelVariants.set('20" Pylon Arm', './car-images/wheel0.png');
+        wheelVariants.set('20" Parallel Spoke', './car-images/wheel1.png');
+        wheelVariants.set('19" V-Spoke', './car-images/wheel2.png');
 
-		const wheel = new Variant(wheelVariants);
-		wheel.populateVariants(this.wheelPanel.variantContentElement, (index: number) => {
-			let payload = { Cmd: "variant" };
-			const body = { SetIndex: '1', Index: index.toString() }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
-		});
+        const wheel = new Variant(wheelVariants);
+        wheel.populateVariants(this.wheelPanel.variantContentElement, (index: number) => {
+            let payload = { Cmd: "variant" };
+            const body = { SetIndex: '1', Index: index.toString() }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
+        });
 
-		const trimVariants = new Map<string, string>();
-		trimVariants.set('Brown Walnut Wood', './images/trim0.png');
-		trimVariants.set('Grey Oak Natural', './images/trim1.png');
-		trimVariants.set('Carbon Fibre', './images/trim2.png');
+        const trimVariants = new Map<string, string>();
+        trimVariants.set('Brown Walnut Wood', './car-images/trim0.png');
+        trimVariants.set('Grey Oak Natural', './car-images/trim1.png');
+        trimVariants.set('Carbon Fibre', './car-images/trim2.png');
 
-		const trim = new Variant(trimVariants);
-		trim.populateVariants(this.trimPanel.variantContentElement, (index: number) => {
-			let payload = { Cmd: "variant" };
-			const body = { SetIndex: '2', Index: index.toString() }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
-		});
+        const trim = new Variant(trimVariants);
+        trim.populateVariants(this.trimPanel.variantContentElement, (index: number) => {
+            let payload = { Cmd: "variant" };
+            const body = { SetIndex: '2', Index: index.toString() }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
+        });
 
-		const leatherVariants = new Map<string, string>();
-		leatherVariants.set('Atlas Beige', './images/leather0.png');
-		leatherVariants.set('Rock Gray', './images/leather1.png');
-		leatherVariants.set('Okapi Brown', './images/leather2.png');
-		leatherVariants.set('Black', './images/leather3.png');
+        const leatherVariants = new Map<string, string>();
+        leatherVariants.set('Atlas Beige', './car-images/leather0.png');
+        leatherVariants.set('Rock Gray', './car-images/leather1.png');
+        leatherVariants.set('Okapi Brown', './car-images/leather2.png');
+        leatherVariants.set('Black', './car-images/leather3.png');
 
-		const leather = new Variant(leatherVariants);
-		leather.populateVariants(this.leatherPanel.variantContentElement, (index: number) => {
-			let payload = { Cmd: "variant" };
-			const body = { SetIndex: '3', Index: index.toString() }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
-		});
+        const leather = new Variant(leatherVariants);
+        leather.populateVariants(this.leatherPanel.variantContentElement, (index: number) => {
+            let payload = { Cmd: "variant" };
+            const body = { SetIndex: '3', Index: index.toString() }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
+        });
 
-		const seatVariants = new Map<string, string>();
-		seatVariants.set('Ventilated', './images/seat0.png');
-		seatVariants.set('Sport', './images/seat1.png');
+        const seatVariants = new Map<string, string>();
+        seatVariants.set('Ventilated', './car-images/seat0.png');
+        seatVariants.set('Sport', './car-images/seat1.png');
 
-		const seats = new Variant(seatVariants);
-		seats.populateVariants(this.seatPanel.variantContentElement, (index: number) => {
-			let payload = { Cmd: "variant" };
-			const body = { SetIndex: '4', Index: index.toString() }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
-		});
+        const seats = new Variant(seatVariants);
+        seats.populateVariants(this.seatPanel.variantContentElement, (index: number) => {
+            let payload = { Cmd: "variant" };
+            const body = { SetIndex: '4', Index: index.toString() }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
+        });
     }
 
     public createOverlays(): void {
@@ -302,8 +302,8 @@ export class CarConfigurator {
      * Set up button click functions and button functionality
      */
     public createButtons() {
-        const controlsUIConfig : ControlsUIConfiguration = {
-            statsButtonType : !!this._options.statsPanelConfig
+        const controlsUIConfig: ControlsUIConfiguration = {
+            statsButtonType: !!this._options.statsPanelConfig
                 ? this._options.statsPanelConfig.visibilityButtonConfig
                 : undefined,
             settingsButtonType: !!this._options.settingsPanelConfig
@@ -313,143 +313,143 @@ export class CarConfigurator {
             xrIconType: this._options.xrControlsConfig,
             microphoneIconType: this._options.microphoneControlsConfig,
             volumeIconType: this._options.volumeControlsConfig
-            
+
         }
         // Setup controls
         const controls = new Controls(controlsUIConfig);
         this.uiFeaturesElement.appendChild(controls.rootElement);
 
         // When we fullscreen we want this element to be the root
-        const fullScreenButton : FullScreenIconBase | undefined = 
+        const fullScreenButton: FullScreenIconBase | undefined =
             // Depending on if we're creating an internal button, or using an external one
-            (!!this._options.fullScreenControlsConfig 
+            (!!this._options.fullScreenControlsConfig
                 && this._options.fullScreenControlsConfig.creationMode === UIElementCreationMode.UseCustomElement)
-            // Either create a fullscreen class based on the external button
-            ? new FullScreenIconExternal(this._options.fullScreenControlsConfig.customElement)
-            // Or use the one created by the Controls initializer earlier
-            : controls.fullscreenIcon;
+                // Either create a fullscreen class based on the external button
+                ? new FullScreenIconExternal(this._options.fullScreenControlsConfig.customElement)
+                // Or use the one created by the Controls initializer earlier
+                : controls.fullscreenIcon;
         if (fullScreenButton) fullScreenButton.fullscreenElement = this.rootElement;
 
         // Add settings button to controls
-        const settingsButton : HTMLElement | undefined = 
-            !!controls.settingsIcon ? controls.settingsIcon.rootElement : 
-            this._options.settingsPanelConfig.visibilityButtonConfig.customElement;
+        const settingsButton: HTMLElement | undefined =
+            !!controls.settingsIcon ? controls.settingsIcon.rootElement :
+                this._options.settingsPanelConfig.visibilityButtonConfig.customElement;
         if (!!settingsButton) settingsButton.onclick = () =>
             this.settingsClicked();
         if (!!this.settingsPanel) this.settingsPanel.settingsCloseButton.onclick = () =>
             this.settingsClicked();
 
-		// Add logs button to controls
-        const logsButton : HTMLElement | undefined = 
-            !!controls.logsIcon ? controls.logsIcon.rootElement : 
-            this._options.logsPanelConfig.visibilityButtonConfig.customElement;
+        // Add logs button to controls
+        const logsButton: HTMLElement | undefined =
+            !!controls.logsIcon ? controls.logsIcon.rootElement :
+                this._options.logsPanelConfig.visibilityButtonConfig.customElement;
         if (!!logsButton) logsButton.onclick = () =>
             this.logsClicked();
-		if (!!this.logsPanel) this.logsPanel.logsCloseButton.onclick = () =>
+        if (!!this.logsPanel) this.logsPanel.logsCloseButton.onclick = () =>
             this.logsClicked();
 
-		// Add paint button to controls
-		const paintButton : HTMLElement | undefined = this.paintButton.rootElement;
+        // Add paint button to controls
+        const paintButton: HTMLElement | undefined = this.paintButton.rootElement;
         if (!!paintButton) paintButton.onclick = () => {
-			let payload = { Cmd: "set" };
-			const body = { SetIndex: '0' }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
+            let payload = { Cmd: "set" };
+            const body = { SetIndex: '0' }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
 
-			this.paintClicked();
-		}
-		if (!!this.paintPanel) this.paintPanel.variantCloseButton.onclick = () =>
+            this.paintClicked();
+        }
+        if (!!this.paintPanel) this.paintPanel.variantCloseButton.onclick = () =>
             this.paintClicked();
 
-		// Add wheel button to controls
-		const wheelButton : HTMLElement | undefined = this.wheelButton.rootElement;
+        // Add wheel button to controls
+        const wheelButton: HTMLElement | undefined = this.wheelButton.rootElement;
         if (!!wheelButton) wheelButton.onclick = () => {
-			let payload = { Cmd: "set" };
-			const body = { SetIndex: '1' }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
+            let payload = { Cmd: "set" };
+            const body = { SetIndex: '1' }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
 
-			this.wheelClicked();
-		}
-		if (!!this.wheelPanel) this.wheelPanel.variantCloseButton.onclick = () =>
+            this.wheelClicked();
+        }
+        if (!!this.wheelPanel) this.wheelPanel.variantCloseButton.onclick = () =>
             this.wheelClicked();
 
-		// Add trim button to controls
-		const trimButton : HTMLElement | undefined = this.trimButton.rootElement;
+        // Add trim button to controls
+        const trimButton: HTMLElement | undefined = this.trimButton.rootElement;
         if (!!trimButton) trimButton.onclick = () => {
-			let payload = { Cmd: "set" };
-			const body = { SetIndex: '2' }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
+            let payload = { Cmd: "set" };
+            const body = { SetIndex: '2' }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
 
-			this.trimClicked();
-		}
-		if (!!this.trimPanel) this.trimPanel.variantCloseButton.onclick = () =>
+            this.trimClicked();
+        }
+        if (!!this.trimPanel) this.trimPanel.variantCloseButton.onclick = () =>
             this.trimClicked();
 
-		// Add leather button to controls
-		const leatherButton : HTMLElement | undefined = this.leatherButton.rootElement;
+        // Add leather button to controls
+        const leatherButton: HTMLElement | undefined = this.leatherButton.rootElement;
         if (!!leatherButton) leatherButton.onclick = () => {
-			let payload = { Cmd: "set" };
-			const body = { SetIndex: '3' }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
+            let payload = { Cmd: "set" };
+            const body = { SetIndex: '3' }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
 
-			this.leatherClicked();
-		}
-		if (!!this.leatherPanel) this.leatherPanel.variantCloseButton.onclick = () =>
+            this.leatherClicked();
+        }
+        if (!!this.leatherPanel) this.leatherPanel.variantCloseButton.onclick = () =>
             this.leatherClicked();
 
-		// Add seat button to controls
-		const seatButton : HTMLElement | undefined = this.seatButton.rootElement;
+        // Add seat button to controls
+        const seatButton: HTMLElement | undefined = this.seatButton.rootElement;
         if (!!seatButton) seatButton.onclick = () => {
-			let payload = { Cmd: "set" };
-			const body = { SetIndex: '3' }
-			payload = { ...payload, ...body };
-			this.stream.emitUIInteraction(payload);
+            let payload = { Cmd: "set" };
+            const body = { SetIndex: '3' }
+            payload = { ...payload, ...body };
+            this.stream.emitUIInteraction(payload);
 
-			this.seatClicked();
-		}
-		if (!!this.seatPanel) this.seatPanel.variantCloseButton.onclick = () =>
+            this.seatClicked();
+        }
+        if (!!this.seatPanel) this.seatPanel.variantCloseButton.onclick = () =>
             this.seatClicked();
 
         // Add WebXR button to controls
-        const xrButton : HTMLElement | undefined = 
-            !!controls.xrIcon ? controls.xrIcon.rootElement : 
-            this._options.xrControlsConfig.creationMode === UIElementCreationMode.UseCustomElement ?
-            this._options.xrControlsConfig.customElement : undefined;
+        const xrButton: HTMLElement | undefined =
+            !!controls.xrIcon ? controls.xrIcon.rootElement :
+                this._options.xrControlsConfig.creationMode === UIElementCreationMode.UseCustomElement ?
+                    this._options.xrControlsConfig.customElement : undefined;
         if (!!xrButton) xrButton.onclick = () =>
             this.stream.toggleXR();
 
-		// Add mute button to controls
-        const muteButton : VolumeIcon | undefined = 
+        // Add mute button to controls
+        const muteButton: VolumeIcon | undefined =
             !!controls.volumeIcon ? controls.volumeIcon : undefined;
         if (!!muteButton) muteButton.onToggled = (muted: boolean) => {
-			// this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
-			//this.stream.setAudioMuted(muted);
-		}
+            // this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
+            //this.stream.setAudioMuted(muted);
+        }
 
-		// Add mic mute button to controls
-        const micMuteButton : MicrophoneIcon | undefined = 
+        // Add mic mute button to controls
+        const micMuteButton: MicrophoneIcon | undefined =
             !!controls.microphoneIcon ? controls.microphoneIcon : undefined;
         if (!!micMuteButton) micMuteButton.onToggled = (muted: boolean) => {
-			// this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
-			//this.stream.setMIcrophoneMuted(muted);
-		}
+            // this needs a PS change to come through https://github.com/EpicGames/PixelStreamingInfrastructure/pull/192
+            //this.stream.setMIcrophoneMuted(muted);
+        }
 
-		// Add freeze button to controls
-        const playButton : HTMLElement | undefined = 
+        // Add freeze button to controls
+        const playButton: HTMLElement | undefined =
             !!controls.playIcon ? controls.playIcon.rootElement : undefined;
         if (!!playButton) playButton.onclick = () => {
-			const payload = { Cmd: "toggleFreeze" };
-			this.stream.emitUIInteraction(payload);
-			controls.playIcon.onFreezeChange();
-		}
+            const payload = { Cmd: "toggleFreeze" };
+            this.stream.emitUIInteraction(payload);
+            controls.playIcon.onFreezeChange();
+        }
 
         // setup the stats/info button
-        const statsButton : HTMLElement | undefined = 
-            !!controls.statsIcon ? controls.statsIcon.rootElement : 
-            this._options.statsPanelConfig.visibilityButtonConfig.customElement;
+        const statsButton: HTMLElement | undefined =
+            !!controls.statsIcon ? controls.statsIcon.rootElement :
+                this._options.statsPanelConfig.visibilityButtonConfig.customElement;
         if (!!statsButton) statsButton.onclick = () => this.statsClicked()
 
         if (!!this.statsPanel) {
@@ -706,19 +706,18 @@ export class CarConfigurator {
      */
     settingsClicked() {
         this.statsPanel.hide();
-		this.logsPanel.hide();
-		this.paintPanel.hide();
+        this.logsPanel.hide();
+        this.paintPanel.hide();
         this.settingsPanel.toggleVisibility();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.settingsPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
@@ -728,151 +727,144 @@ export class CarConfigurator {
      */
     statsClicked() {
         this.settingsPanel.hide();
-		this.logsPanel.hide();
-		this.paintPanel.hide();
+        this.logsPanel.hide();
+        this.paintPanel.hide();
         this.statsPanel.toggleVisibility();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.statsPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the logs panel if clicked
      */
     logsClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.paintPanel.hide();
+        this.statsPanel.hide();
+        this.paintPanel.hide();
         this.logsPanel.toggleVisibility();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.logsPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the paint panel if clicked
      */
     paintClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.logsPanel.hide();
+        this.statsPanel.hide();
+        this.logsPanel.hide();
         this.paintPanel.toggleVisibility();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.paintPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the wheel panel if clicked
      */
     wheelClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.logsPanel.hide();
+        this.statsPanel.hide();
+        this.logsPanel.hide();
         this.paintPanel.hide();
-		this.wheelPanel.toggleVisibility();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.toggleVisibility();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.wheelPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the trim panel if clicked
      */
     trimClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.logsPanel.hide();
+        this.statsPanel.hide();
+        this.logsPanel.hide();
         this.paintPanel.hide();
-		this.wheelPanel.hide();
-		this.trimPanel.toggleVisibility();
-		this.leatherPanel.hide();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.toggleVisibility();
+        this.leatherPanel.hide();
+        this.seatPanel.hide();
 
         if (this.trimPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the leather panel if clicked
      */
     leatherClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.logsPanel.hide();
+        this.statsPanel.hide();
+        this.logsPanel.hide();
         this.paintPanel.hide();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.toggleVisibility();
-		this.seatPanel.hide();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.toggleVisibility();
+        this.seatPanel.hide();
 
         if (this.leatherPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
 
-	/**
+    /**
      * Shows or hides the seats panel if clicked
      */
     seatClicked() {
         this.settingsPanel.hide();
-		this.statsPanel.hide();
-		this.logsPanel.hide();
+        this.statsPanel.hide();
+        this.logsPanel.hide();
         this.paintPanel.hide();
-		this.wheelPanel.hide();
-		this.trimPanel.hide();
-		this.leatherPanel.hide();
-		this.seatPanel.toggleVisibility();
+        this.wheelPanel.hide();
+        this.trimPanel.hide();
+        this.leatherPanel.hide();
+        this.seatPanel.toggleVisibility();
 
         if (this.seatPanel.rootElement.classList.contains('panel-wrap-visible')) {
             this.optionsBar.classList.add('opacity')
         }
-        else 
-        {
+        else {
             this.optionsBar.classList.remove('opacity')
         }
     }
@@ -1055,7 +1047,7 @@ export class CarConfigurator {
 
     handleStreamerListMessage(messageStreamingList: MessageStreamerList, autoSelectedStreamerId: string | null) {
         if (autoSelectedStreamerId === null) {
-            if(messageStreamingList.ids.length === 0) {
+            if (messageStreamingList.ids.length === 0) {
                 this.showDisconnectOverlay(
                     'No streamers connected. <div class="clickableState">Click To Restart</div>'
                 );
