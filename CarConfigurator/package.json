@@ -23,5 +23,9 @@
     "webpack": "^5.76.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "carconfigurator-lib": "file:../CarConfigurator-Lib",
+    "carconfigurator-ui": "file:../CarConfigurator-UI"
   }
 }
