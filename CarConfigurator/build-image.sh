@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm run build
+npm run build-all
 
 docker build -t docker.io/dpholden/carconfigurator-frontend:5.2-11 .
 
