@@ -32,7 +32,7 @@ document.body.onload = function () {
 	const config = new Config({ useUrlParams: true, initialSettings: { OfferToReceive: true, TimeoutIfIdle: true, AutoConnect: false, MaxReconnectAttempts: 0, MatchViewportRes: true } });
 
 	// make usage of WEBSOCKET_URL if it is not empty
-	let webSocketAddress = "wss://sps.tenant-tensorworks-demo.lga1.ingress.coreweave.cloud/car-config/ws";
+	let webSocketAddress = WEBSOCKET_URL
 	if (webSocketAddress != "") {
 		config.setTextSetting(TextParameters.SignallingServerUrl, webSocketAddress);
 	}
