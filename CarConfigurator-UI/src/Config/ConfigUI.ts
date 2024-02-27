@@ -17,7 +17,7 @@ import {
     SettingOption,
     Logger,
     SettingBase
-} from 'carconfigurator-lib';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { SettingUIFlag } from './SettingUIFlag';
 import { SettingUINumber } from './SettingUINumber';
 import { SettingUIText } from './SettingUIText';
@@ -173,10 +173,6 @@ export class ConfigUI {
         this.addSettingFlag(
             psSettingsSection,
             this.flagsUi.get(Flags.StartVideoMuted)
-        );
-        this.addSettingFlag(
-            psSettingsSection,
-            this.flagsUi.get(Flags.PreferSFU)
         );
         this.addSettingFlag(
             psSettingsSection,
