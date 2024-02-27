@@ -8,7 +8,7 @@ import {
     LatencyTestResults,
     InitialSettings,
     MessageStreamerList
-} from 'carconfigurator-lib';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { OverlayBase } from '../Overlay/BaseOverlay';
 import { ActionOverlay } from '../Overlay/ActionOverlay';
 import { TextOverlay } from '../Overlay/TextOverlay';
@@ -552,8 +552,8 @@ export class CarConfigurator {
         );
         this.stream.addEventListener(
             'webRtcDisconnected',
-            ({ data: { eventString, showActionOrErrorOnDisconnect } }) =>
-                this.onDisconnect(eventString, showActionOrErrorOnDisconnect)
+            ({ data: { eventString, allowClickToReconnect } }) =>
+                this.onDisconnect(eventString, allowClickToReconnect)
         );
         this.stream.addEventListener('videoInitialized', () =>
             this.onVideoInitialized()
@@ -596,6 +596,15 @@ export class CarConfigurator {
             'settingsChanged',
             (event) => this.configUI.onSettingsChanged(event)
         );
+
+        this.stream.addEventListener(
+            'webRtcTCPRelayDetected', 
+            ({}) => 
+                Logger.Warning(
+                    Logger.GetStackTrace(),
+                    `Stream quality degraded due to network enviroment, stream is relayed over TCP.`
+               )
+        );        
     }
 
     /**

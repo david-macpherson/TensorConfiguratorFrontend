@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import { Logger } from 'carconfigurator-lib';
+import { Logger } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';;
 
 import { OverlayBase } from './BaseOverlay';
 
@@ -24,9 +24,9 @@ export class ActionOverlay extends OverlayBase {
         super(rootDiv, rootElement, contentElement);
         this.onActionCallback = () => {
             /* do nothing */ Logger.Info(
-                Logger.GetStackTrace(),
-                'Did you forget to set the onAction callback in your overlay?'
-            );
+            Logger.GetStackTrace(),
+            'Did you forget to set the onAction callback in your overlay?'
+        );
         };
     }
 
