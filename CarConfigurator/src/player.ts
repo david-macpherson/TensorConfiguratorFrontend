@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import { Config, PixelStreaming } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+import { Config, PixelStreaming } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { CarConfigurator, CarConfiguratorStyle } from 'carconfigurator-ui';
 const CarConfiguratorStyles =
     new CarConfiguratorStyle();
