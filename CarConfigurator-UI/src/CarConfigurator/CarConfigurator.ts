@@ -8,7 +8,7 @@ import {
     LatencyTestResults,
     InitialSettings,
     MessageStreamerList
-} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { OverlayBase } from '../Overlay/BaseOverlay';
 import { ActionOverlay } from '../Overlay/ActionOverlay';
 import { TextOverlay } from '../Overlay/TextOverlay';
@@ -544,8 +544,8 @@ export class CarConfigurator {
         );
         this.stream.addEventListener(
             'webRtcDisconnected',
-            ({ data: { eventString, showActionOrErrorOnDisconnect } }) =>
-                this.onDisconnect(eventString, showActionOrErrorOnDisconnect)
+            ({ data: { eventString, allowClickToReconnect } }) =>
+                this.onDisconnect(eventString, allowClickToReconnect)
         );
         this.stream.addEventListener('videoInitialized', () =>
             this.onVideoInitialized()
