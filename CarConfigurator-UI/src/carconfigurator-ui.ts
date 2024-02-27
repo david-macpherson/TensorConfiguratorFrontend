@@ -19,3 +19,5 @@ export { SettingUIFlag } from './Config/SettingUIFlag';
 export { SettingUINumber } from './Config/SettingUINumber';
 export { SettingUIOption } from './Config/SettingUIOption';
 export { SettingUIText } from './Config/SettingUIText';
+
+export * from './UI/UIConfigurationTypes';

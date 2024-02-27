@@ -7,8 +7,8 @@ const webpack = require('webpack');
 const fs = require('fs');
 
 const pages = fs.readdirSync('./src', {
-    withFileTypes: true
-  })
+  withFileTypes: true
+})
   .filter(item => !item.isDirectory())
   .filter(item => path.parse(item.name).ext === '.html')
   .map(htmlFile => path.parse(htmlFile.name).name);
@@ -20,10 +20,13 @@ module.exports = {
   }, {}),
 
   plugins: [
+    new webpack.DefinePlugin({
+      WEBSOCKET_URL: JSON.stringify((process.env.WEBSOCKET_URL !== undefined) ? process.env.WEBSOCKET_URL : '')
+    }),
     new CopyWebpackPlugin({
       patterns: [{
         from: 'src/assets/images',
-        to: 'images'
+        to: 'car-images'
       }]
     })
   ].concat(pages.map((page) => new HtmlWebpackPlugin({
@@ -31,7 +34,7 @@ module.exports = {
     template: `./src/${page}.html`,
     filename: `${page}.html`,
     chunks: [page],
-  }), )),
+  }),)),
 
   module: {
     rules: [{
@@ -53,7 +56,7 @@ module.exports = {
       test: /\.(png|svg|jpg|jpeg|gif)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'images/[name][ext]'
+        filename: 'car-images/[name][ext]'
       }
     }],
   },
@@ -61,7 +64,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.svg', '.json'],
   },
   output: {
-    filename: '[name].js',
+    filename: 'carconfig.js',
     library: 'carconfig-frontend',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, './dist/www/'),

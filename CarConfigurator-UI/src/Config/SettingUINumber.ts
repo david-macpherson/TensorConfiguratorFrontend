@@ -3,8 +3,8 @@
 import type {
     NumericParametersIds,
     SettingNumber
-} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
-import { Logger } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+} from 'carconfigurator-lib';
+import { Logger } from 'carconfigurator-lib';
 import { SettingUIBase } from './SettingUIBase';
 
 /**

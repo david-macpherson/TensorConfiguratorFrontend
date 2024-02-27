@@ -27,7 +27,9 @@ export class OptionPanel {
 			// image.classList.add('option-image');
 
 			const descriptor = document.createElement('div');
-			descriptor.innerHTML = this.optionName;
+            const text = document.createElement('p');
+            text.innerHTML = this.optionName;
+            descriptor.appendChild(text);
 			// descriptor.classList.add('option-descriptor');
 
 			this._rootElement.appendChild(image);

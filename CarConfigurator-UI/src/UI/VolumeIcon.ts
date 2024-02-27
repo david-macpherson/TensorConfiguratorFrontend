@@ -94,10 +94,9 @@ export class VolumeIcon extends VolumeIconBase {
         if (!this._tooltipText) {
             this._tooltipText = document.createElement('span');
             this._tooltipText.classList.add('tooltiptext');
-            this._tooltipText.innerHTML = 'Volume';
         }
 
-		this._tooltipText.innerHTML = this.isMute ? 'Unmute' : 'Mute';
+		this._tooltipText.innerHTML = this.isMute ? 'Undeafen' : 'Deafen';
 
         return this._tooltipText;
     }
@@ -273,7 +272,7 @@ export class VolumeIcon extends VolumeIconBase {
 
         const unmute = this.unmuteIcon;
         const mute = this.muteIcon;
-		this._tooltipText.innerHTML = this.isMute ? 'Unmute' : 'Mute';
+		this._tooltipText.innerHTML = this.isMute ? 'Undeafen' : 'Deafen';
         if (this.isMute) {
             unmute.style.display = 'inline';
             //ios disappearing svg fix

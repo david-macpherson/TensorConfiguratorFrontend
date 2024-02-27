@@ -93,7 +93,6 @@ export class MicrophoneIcon extends MicrophoneIconBase {
         if (!this._tooltipText) {
             this._tooltipText = document.createElement('span');
             this._tooltipText.classList.add('tooltiptext');
-            this._tooltipText.innerHTML = 'Volume';
         }
 
 		this._tooltipText.innerHTML = this.isMute ? 'Unmute' : 'Mute';
