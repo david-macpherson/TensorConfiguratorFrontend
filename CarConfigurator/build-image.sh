@@ -1,7 +1,11 @@
 #!/bin/bash
 
-npm run build-all
+set -e 
 
-docker build -t docker.io/dpholden/carconfigurator-frontend:5.2-12 .
+TAG=tensorworks/sps-tensorconfigurator-frontend:0.0.0-devel
 
-docker push docker.io/dpholden/carconfigurator-frontend:5.2-12
+npm run build-dev-all
+
+docker build -t $TAG .
+
+docker push $TAG
