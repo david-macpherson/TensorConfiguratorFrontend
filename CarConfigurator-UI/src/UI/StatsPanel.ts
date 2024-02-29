@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 import { LatencyTest } from './LatencyTest';
-import { Logger } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
+import { CandidatePairStats, Logger } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { AggregatedStats } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { MathUtils } from '../Util/MathUtils';
 
@@ -263,7 +263,7 @@ export class StatsPanel {
             );
         }
 
-        let activeCandidatePair = stats.getActiveCandidatePair()
+        let activeCandidatePair = stats.getActiveCandidatePair() != null ? stats.getActiveCandidatePair() : new CandidatePairStats();
 
         // RTT
         const netRTT =
