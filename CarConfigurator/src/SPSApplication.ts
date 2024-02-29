@@ -1,5 +1,5 @@
 import { CarConfigurator, SettingUIFlag, UIOptions } from 'carconfigurator-ui';
-import { AggregatedStats, SettingFlag, TextParameters } from 'carconfigurator-lib';
+import { AggregatedStats, SettingFlag, TextParameters } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { LoadingOverlay } from './LoadingOverlay';
 import { SPSSignalling } from './SignallingExtension';
 import { MessageStats } from './Messages';
