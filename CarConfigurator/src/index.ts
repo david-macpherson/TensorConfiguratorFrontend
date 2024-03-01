@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import { Config, PixelStreaming, MessageRecv, TextParameters, Flags } from 'carconfigurator-lib';
+import { Config, PixelStreaming, MessageRecv, TextParameters, Flags } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { CarConfiguratorStyle, UIElementCreationMode } from 'carconfigurator-ui';
 import { SPSApplication } from "./SPSApplication";
 
