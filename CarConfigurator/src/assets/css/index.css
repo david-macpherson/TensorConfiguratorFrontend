@@ -14,7 +14,8 @@
 	top: 3%;
 	left: 2%;
 	font-family: 'Michroma', 'sans-serif';
-	pointer-events: all; 
+	pointer-events: all;
+	z-index: -1;
 }
 
 #webRtcTcpRelayDetectIndicator {
