@@ -3,6 +3,6 @@
 // For SPS versions above 0.10.2 the websocket address was changed to connect to /signalling and then the pathname was added
 // eg ws://<hostname>/signalling/<application name>
 // Set this to true if building for use on SPS versions v0.10.2 or below
-export var SPS_LEGACY_SIGNALLING_PATH_WS: boolean = true;
+export var SPS_LEGACY_SIGNALLING_PATH_WS: boolean = false;
 
 
