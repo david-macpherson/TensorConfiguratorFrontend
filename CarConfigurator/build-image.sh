@@ -48,11 +48,7 @@ if [ "$BUILD_COREWEAVE_DEMO" = true ]; then
     sed -i 's/let webSocketAddress = WEBSOCKET_URL/let webSocketAddress = "wss:\/\/sps.tenant-tensorworks-demo.lga1.ingress.coreweave.cloud\/car-config\/ws";/g' src/index.ts
 fi
 
-
-
 npm run build-dev-all
-
-
 
 #Set the SPS_LEGACY_SIGNALLING_PATH_WS var back to false
 if [ "$BUILD_LEGACY" = true ]; then
