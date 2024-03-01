@@ -3,6 +3,7 @@ import { AggregatedStats, SettingFlag, TextParameters } from '@epicgames-ps/lib-
 import { LoadingOverlay } from './LoadingOverlay';
 import { SPSSignalling } from './SignallingExtension';
 import { MessageStats } from './Messages';
+import { SPS_LEGACY_SIGNALLING_PATH_WS } from './const';
 
 
 export class SPSApplication extends CarConfigurator {
@@ -52,11 +53,17 @@ export class SPSApplication extends CarConfigurator {
 		// SPS needs a special /ws added to the signalling server url so K8s can distinguish it
 		this.stream.setSignallingUrlBuilder(() => {
 
-			// get the current signalling url
 			let signallingUrl = this.stream.config.getTextSettingValue(TextParameters.SignallingServerUrl);
 
-			// add our 'ws' token to the end dependant on whether the URL ends with a '/' or not
-			signallingUrl = signallingUrl.endsWith("/") ? signallingUrl + "signalling" + window.location.pathname : signallingUrl + "/signalling" + window.location.pathname;
+			// Check if building for SPS version 0.10.2 or below and override the generated signalling address
+			if (SPS_LEGACY_SIGNALLING_PATH_WS) {
+				// This is required for versions of SPS v0.10.2 or below
+				if (signallingUrl && signallingUrl !== undefined && !signallingUrl.endsWith("/ws")) {
+					signallingUrl = signallingUrl.endsWith("/") ? signallingUrl + "ws" : signallingUrl + window.location.pathname + "/ws";
+				}
+			} else {
+				signallingUrl = signallingUrl.endsWith("/") ? signallingUrl + "signalling" + window.location.pathname : signallingUrl + "/signalling" + window.location.pathname;
+			}
 
 			return signallingUrl
 		});
