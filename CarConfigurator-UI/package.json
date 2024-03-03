@@ -9,9 +9,9 @@
     "scripts": {
         "compile": "tsc --build --clean && tsc",
         "build": "npx webpack --config webpack.prod.js",
-        "build-all": "cd ../CarConfigurator-Lib && npm install && npx webpack --config webpack.prod.js && cd ../CarConfigurator-UI && npm install && npm link ../CarConfigurator-Lib && npx webpack --config webpack.prod.js",
+        "build-all": "npm install && npx webpack --config webpack.prod.js",
         "build-dev": "npx webpack --config webpack.dev.js",
-        "build-dev-all": "cd ../CarConfigurator-Lib && npm install && npx webpack --config webpack.dev.js && cd ../CarConfigurator-UI && npm install && npm link ../CarConfigurator-Lib && npx webpack --config webpack.dev.js",
+        "build-dev-all": "npm install && npx webpack --config webpack.dev.js",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "spellcheck": "cspell \"{README.md,.github/*.md,src/**/*.ts}\""
     },
@@ -28,7 +28,7 @@
         "webpack-cli": "^5.0.1"
     },
     "dependencies": {
-        "carconfigurator-lib": "file:../CarConfigurator-Lib",
+        "@epicgames-ps/lib-pixelstreamingfrontend-ue5.4": "^0.0.4",
         "jss": "^10.9.2",
         "jss-plugin-camel-case": "^10.9.2",
         "jss-plugin-global": "^10.9.2"

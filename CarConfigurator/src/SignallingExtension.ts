@@ -3,7 +3,7 @@ import {
 	MessageRecv,
 	MessageSend,
 	WebSocketController,
-} from 'carconfigurator-lib';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 
 /**
  * Auth Request Message Wrapper

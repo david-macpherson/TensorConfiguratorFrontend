@@ -7,7 +7,7 @@ import {
 	InboundVideoStats,
 	MessageSend,
 	OutBoundVideoStats
-} from 'carconfigurator-lib';
+} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 
 export enum MessageSendTypes {
 	STATS = "stats",
@@ -19,7 +19,7 @@ export enum MessageSendTypes {
 export class MessageStats extends MessageSend {
 	inboundVideoStats: InboundVideoStats;
 	inboundAudioStats: InboundAudioStats;
-	candidatePair: CandidatePairStats
+	candidatePairs: Array<CandidatePairStats>;
 	dataChannelStats: DataChannelStats;
 	localCandidates: Array<CandidateStat>;
 	remoteCandidates: Array<CandidateStat>;
@@ -33,7 +33,7 @@ export class MessageStats extends MessageSend {
 		this.type = MessageSendTypes.STATS
 		this.inboundVideoStats = aggregatedStats.inboundVideoStats;
 		this.inboundAudioStats = aggregatedStats.inboundAudioStats;
-		this.candidatePair = aggregatedStats.candidatePair;
+		this.candidatePairs = aggregatedStats.candidatePairs;
 		this.dataChannelStats = aggregatedStats.DataChannelStats
 		this.localCandidates = aggregatedStats.localCandidates;
 		this.remoteCandidates = aggregatedStats.remoteCandidates;
