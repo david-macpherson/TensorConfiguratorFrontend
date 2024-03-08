@@ -724,10 +724,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.settingsPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -745,10 +745,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.statsPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -766,10 +766,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.logsPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -787,10 +787,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.paintPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -808,10 +808,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.wheelPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -829,10 +829,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.trimPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -850,10 +850,10 @@ export class CarConfigurator {
         this.seatPanel.hide();
 
         if (this.leatherPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
@@ -871,10 +871,10 @@ export class CarConfigurator {
         this.seatPanel.toggleVisibility();
 
         if (this.seatPanel.rootElement.classList.contains('panel-wrap-visible')) {
-            this.optionsBar.classList.add('opacity')
+            this.optionsBar.classList.add('hide')
         }
         else {
-            this.optionsBar.classList.remove('opacity')
+            this.optionsBar.classList.remove('hide')
         }
     }
 
