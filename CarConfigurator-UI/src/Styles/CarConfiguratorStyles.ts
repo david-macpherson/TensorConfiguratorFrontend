@@ -715,6 +715,9 @@ export class CarConfiguratorStyle {
         '.opacity': {
 			'opacity': '0'
 		},
+        '.hide': {
+            'display': 'none !important'
+        },
 		'.variant-container': {
 			flexBasis: 'calc( 100% / 5 )',
 			backgroundColor: 'rgba(var(--color13), 0.2)',
