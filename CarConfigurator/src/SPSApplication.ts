@@ -49,7 +49,11 @@ export class SPSApplication extends CarConfigurator {
 	}
 
 	handleSignallingResponse(signallingResp: string, isError: boolean) {
-		this.showErrorOverlay(signallingResp);
+		if (isError) {
+			this.showErrorOverlay(signallingResp);
+		} else {
+			this.showLoadingOverlay(signallingResp);
+		}
 	}
 
 	/**
