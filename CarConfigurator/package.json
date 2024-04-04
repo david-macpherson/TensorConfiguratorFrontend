@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "carconfigurator-ui": "file:../CarConfigurator-UI",
-    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.4": "^0.0.4"
-    
+    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.4": "^0.0.4",
+    "dotenv": "^16.0.3"
   }
 }
