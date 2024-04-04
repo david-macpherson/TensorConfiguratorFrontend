@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const webpack = require('webpack');
 const fs = require('fs');
+require('dotenv').config({ path: './.env' });
 
 const pages = fs.readdirSync('./src', {
   withFileTypes: true
@@ -20,9 +21,6 @@ module.exports = {
   }, {}),
 
   plugins: [
-    new webpack.DefinePlugin({
-      WEBSOCKET_URL: JSON.stringify((process.env.WEBSOCKET_URL !== undefined) ? process.env.WEBSOCKET_URL : '')
-    }),
     new CopyWebpackPlugin({
       patterns: [{
         from: 'src/assets/images',
