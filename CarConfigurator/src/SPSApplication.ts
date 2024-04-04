@@ -7,6 +7,7 @@ import { MessageStats } from './Messages';
 // For local testing. Declare a websocket URL that can be imported via a .env file that will override 
 // the signalling server URL builder.
 declare var WEBSOCKET_URL: string;
+declare var ENABLE_METRICS: boolean;
 
 export class SPSApplication extends CarConfigurator {
 	private loadingOverlay: LoadingOverlay;

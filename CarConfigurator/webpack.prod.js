@@ -16,7 +16,9 @@ module.exports = merge(common, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      WEBSOCKET_URL: undefined
+      WEBSOCKET_URL: undefined,
+      ENABLE_METRICS: undefined,
+      BUCCANEER_URL: undefined
     }),
   ]
 });
