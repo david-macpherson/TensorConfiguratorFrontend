@@ -7,16 +7,16 @@ enum StatOperation {
 	Reset = 1,
 	Add,
 	Average,
-    Min,
-    Max
+	Min,
+	Max
 }
 
 interface StatOptions {
-    description: string;
+	description: string;
 	operation: StatOperation;
 }
 
-const SupportedStats : Record<string, StatOptions> = {
+const SupportedStats: Record<string, StatOptions> = {
 	'video_width': { description: 'Video width', operation: StatOperation.Reset },
 	'video_height': { description: 'Video height', operation: StatOperation.Reset },
 	'video_bitrate': { description: 'Video bitrate', operation: StatOperation.Average },
@@ -47,11 +47,12 @@ export class MetricsReporter {
 	private user_agent: string | undefined;
 	private loading_start: number | undefined;
 	private start_time: number | undefined;
+	private disconnect_code: string | undefined;
 	private disconnect_reason: string | undefined;
 
 	constructor() {
 		this.stat_values = {};
-        this.ema_samples = {};
+		this.ema_samples = {};
 	}
 
 	startLoading() {
@@ -71,7 +72,13 @@ export class MetricsReporter {
 		this.loading_start = undefined;
 	}
 
-	endSession(reason: string) {
+	// note: code is currently left as undefined since the webrtcdisconnect event does not include
+	// the code but only the reason.
+	// a possible solution for it might be to use webSocketControllers close event which contains
+	// the code and reason from the signalling server but reason is sometimes set by the frontend.
+	// the real solution for this would be to update the pixel streaming library code to include
+	// the code also.
+	endSession(reason: string, code: string) {
 		if (!this.session_id) {
 			return;
 		}
@@ -81,6 +88,7 @@ export class MetricsReporter {
 		this.updateStatValue("session_duration", session_duration);
 
 		// record end reason
+		this.disconnect_code = code;
 		this.disconnect_reason = reason;
 
 		this.postSessionData();
@@ -123,15 +131,15 @@ export class MetricsReporter {
 		}
 	}
 
-    private calcMA(prev_value: number, num_samples: number, new_value: number): number {
-        const result = num_samples * prev_value + new_value;
-        return result / (num_samples + 1.0);
-    }
+	private calcMA(prev_value: number, num_samples: number, new_value: number): number {
+		const result = num_samples * prev_value + new_value;
+		return result / (num_samples + 1.0);
+	}
 
-    private calcEMA(prev_value: number, num_samples: number, new_value: number): number {
-        const K = 2 / (num_samples + 1);
-        return (new_value - prev_value) * K + prev_value;
-    }
+	private calcEMA(prev_value: number, num_samples: number, new_value: number): number {
+		const K = 2 / (num_samples + 1);
+		return (new_value - prev_value) * K + prev_value;
+	}
 
 	private updateStatValue(name: string, value: number) {
 		if (value == null) {
@@ -147,32 +155,32 @@ export class MetricsReporter {
 		if (stat_options.operation == StatOperation.Average) {
 			// Calculate EMA
 			if (this.stat_values[name]) {
-                const prev_value = this.stat_values[name];
-                const num_samples = this.ema_samples[name];
-                if (num_samples < 10) {
-                    this.stat_values[name] = this.calcMA(prev_value, num_samples, value);
-                } else {
-                    this.stat_values[name] = this.calcEMA(prev_value, num_samples, value);
-                }
-                this.ema_samples[name] += 1;
+				const prev_value = this.stat_values[name];
+				const num_samples = this.ema_samples[name];
+				if (num_samples < 10) {
+					this.stat_values[name] = this.calcMA(prev_value, num_samples, value);
+				} else {
+					this.stat_values[name] = this.calcEMA(prev_value, num_samples, value);
+				}
+				this.ema_samples[name] += 1;
 			} else {
 				this.stat_values[name] = value;
-                this.ema_samples[name] = 1;
+				this.ema_samples[name] = 1;
 			}
 		} else if (stat_options.operation == StatOperation.Add) {
 			this.stat_values[name] += value;
-        } else if (stat_options.operation == StatOperation.Min) {
-            if (!this.stat_values[name]) {
-                this.stat_values[name] = value;
-            } else {
-                this.stat_values[name] = Math.min(this.stat_values[name], value);
-            }
-        } else if (stat_options.operation == StatOperation.Max) {
-            if (!this.stat_values[name]) {
-                this.stat_values[name] = value;
-            } else {
-                this.stat_values[name] = Math.max(this.stat_values[name], value);
-            }
+		} else if (stat_options.operation == StatOperation.Min) {
+			if (!this.stat_values[name]) {
+				this.stat_values[name] = value;
+			} else {
+				this.stat_values[name] = Math.min(this.stat_values[name], value);
+			}
+		} else if (stat_options.operation == StatOperation.Max) {
+			if (!this.stat_values[name]) {
+				this.stat_values[name] = value;
+			} else {
+				this.stat_values[name] = Math.max(this.stat_values[name], value);
+			}
 		} else {
 			this.stat_values[name] = value;
 		}
@@ -182,45 +190,51 @@ export class MetricsReporter {
 		const session_data = {
 			id: this.session_id,
 			user_agent: this.user_agent,
+			disconnect_code: this.disconnect_code,
 			disconnect_reason: this.disconnect_reason,
 			stat_values: this.stat_values
 		}
 
-        // log session for loki
+		// Set the buccaneer url path to be
+		let buccaneer_url = "http://" + window.location.hostname + ":8000/event";
 
-		const events_url = `http://${BUCCANEER_URL || window.location.hostname}:8000/event`;
-		try {
-			const blob = new Blob([JSON.stringify(session_data)], { type: 'application/json; charset=UTF-8' });
-			navigator.sendBeacon(events_url, blob);
-		} catch (error) {
-			console.error(`Unable to POST session data to ${events_url}: ${error}`);
+		// If the buccaneer url has been set in the .env then use that
+		if (BUCCANEER_URL !== undefined) {
+			buccaneer_url = BUCCANEER_URL
 		}
 
-        // i thought posting to prom would make grafana queries nicer but it was
-        // acting even weirder. if we need to post to prom we can reuse this code.
+		try {
+			const blob = new Blob([JSON.stringify(session_data)], { type: 'application/json; charset=UTF-8' });
+			navigator.sendBeacon(buccaneer_url, blob);
+		} catch (error) {
+			console.error(`Unable to POST session data to ${buccaneer_url}: ${error}`);
+		}
 
-        // // post session stats for prometheus
+		// i thought posting to prom would make grafana queries nicer but it was
+		// acting even weirder. if we need to post to prom we can reuse this code.
 
-        // const stats_package: any = {};
-        // for (const stat_name in this.stat_values) {
-        //     stats_package[stat_name] = {
-        //         description: SupportedStats[stat_name].description,
-        //         value: this.stat_values[stat_name]
-        //     };
-        // }
+		// // post session stats for prometheus
 
-        // const post_data = {
-        //     id: this.session_id,
-        //     metrics: stats_package
-        // };
+		// const stats_package: any = {};
+		// for (const stat_name in this.stat_values) {
+		//     stats_package[stat_name] = {
+		//         description: SupportedStats[stat_name].description,
+		//         value: this.stat_values[stat_name]
+		//     };
+		// }
 
-        // const stats_url = `http://${BUCCANEER_URL || window.location.hostname}:8000/stats`;
-        // try {
-        //     const blob = new Blob([JSON.stringify(post_data)], { type: 'application/json; charset=UTF-8' });
-        //     navigator.sendBeacon(stats_url, blob);
-        // } catch (error) {
-        //     console.error(`Unable to POST stats data to ${stats_url}: ${error}`);
-        // }
+		// const post_data = {
+		//     id: this.session_id,
+		//     metrics: stats_package
+		// };
+
+		// const stats_url = `http://${BUCCANEER_URL || window.location.hostname}:8000/stats`;
+		// try {
+		//     const blob = new Blob([JSON.stringify(post_data)], { type: 'application/json; charset=UTF-8' });
+		//     navigator.sendBeacon(stats_url, blob);
+		// } catch (error) {
+		//     console.error(`Unable to POST stats data to ${stats_url}: ${error}`);
+		// }
 	}
 }
 
