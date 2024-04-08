@@ -1,0 +1,13 @@
+## Buccanneer storeage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metrics-buccaneer
+  namespace: tenant-tensorworks-testing
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: block-nvme-lga1

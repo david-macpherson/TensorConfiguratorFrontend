@@ -1,0 +1,91 @@
+
+
+
+---
+
+
+# Buccanneer API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-buccaneer
+  namespace: tenant-tensorworks-testing
+  annotations:
+    alb.ingress.kubernetes.io/target-type: instance
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: metrics-buccaneer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-buccaneer
+  namespace: tenant-tensorworks-testing
+  labels:
+    app.kubernetes.io/name: metrics-buccaneer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metrics-buccaneer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: metrics-buccaneer
+    spec:
+      volumes:
+        - name: metrics-buccaneer-data
+          persistentVolumeClaim:
+            claimName: metrics-buccaneer
+      containers:
+        - name: metrics-buccaneer
+          image: docker.io/davidmacpherson/sps-buccaneerserver:0.0.0-devel
+          volumeMounts:
+            - name: metrics-buccaneer-data
+              mountPath: /app
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node.coreweave.cloud/cpu
+                    operator: In
+                    values:
+                      - amd-epyc-milan
+                  - key: topology.kubernetes.io/region
+                    operator: In
+                    values:
+                      - LGA1
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

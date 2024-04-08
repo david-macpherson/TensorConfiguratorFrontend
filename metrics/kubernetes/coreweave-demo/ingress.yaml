@@ -1,0 +1,45 @@
+# REST API Ingress Rules
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metrics-buccaneer
+  namespace: tenant-tensorworks-demo
+  labels:
+    app.kubernetes.io/name: metrics-buccaneer
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+spec:
+  tls:
+    - hosts:
+        - metrics.tenant-tensorworks-demo.lga1.ingress.coreweave.cloud
+      secretName: metrics-buccaneer-lga1-tls
+  rules:
+    - host: metrics.tenant-tensorworks-demo.lga1.ingress.coreweave.cloud
+      http:
+        paths:
+          - path: /event
+            pathType: Prefix
+            backend:
+              service:
+                name: metrics-buccaneer
+                port:
+                  number: 80
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: metrics-grafana
+                port:
+                  number: 80
+
+---
+

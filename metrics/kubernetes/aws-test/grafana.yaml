@@ -1,0 +1,928 @@
+# grafana config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metrics-grafana
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-grafana
+data:
+  grafana.ini: |
+    [server]
+    root_url = "http://test-991280457.ap-northeast-1.elb.amazonaws.com/grafana"
+    serve_from_sub_path = true
+
+    [auth]
+    disable_login_form = false
+
+    [auth.basic]
+    enabled = false
+
+    [auth.anonymous]
+    enabled = true
+    org_name = TensorWorks
+    org_role = Viewer
+
+
+  dashboard-config.yaml: |
+    apiVersion: 1
+
+    providers:
+      - name: dashboards
+        type: file
+        updateIntervalSeconds: 30
+        options:
+          path: /etc/dashboards
+          foldersFromFilesStructure: true
+  
+  datasource-config.yaml: |
+    apiVersion: 1
+
+    datasources:
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://metrics-loki.default.svc.cluster.local:3100
+      jsonData:
+        maxLines: 1000
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      httpMethod: POST
+      url: http://metrics-prometheus.default.svc.cluster.local:9090
+
+  ue_dashboard.json: |
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          },
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "P8E80F9AEF21F6940"
+            },
+            "enable": true,
+            "expr": "{stream=~\"Error|error\"}",
+            "iconColor": "red",
+            "instant": false,
+            "name": "Error",
+            "target": {},
+            "textFormat": "",
+            "titleFormat": ""
+          },
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "P8E80F9AEF21F6940"
+            },
+            "enable": true,
+            "expr": "{stream=~\"Log|log\"}",
+            "iconColor": "blue",
+            "name": "Info",
+            "target": {}
+          },
+          {
+            "datasource": {
+              "type": "loki",
+              "uid": "P8E80F9AEF21F6940"
+            },
+            "enable": true,
+            "expr": "{stream=~\"Warning|warning\"}",
+            "iconColor": "orange",
+            "name": "Warning",
+            "target": {}
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 33,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_bitrate\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Average",
+              "queryType": "range",
+              "refId": "A",
+              "step": ""
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_bitrate_min\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Min",
+              "queryType": "range",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_bitrate_max\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Max",
+              "queryType": "range",
+              "refId": "C"
+            }
+          ],
+          "title": "Video Bitrate",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.audio_bitrate\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Average",
+              "queryType": "range",
+              "refId": "A",
+              "step": ""
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.audio_bitrate_min\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Min",
+              "queryType": "range",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.audio_bitrate_max\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Max",
+              "queryType": "range",
+              "refId": "C"
+            }
+          ],
+          "title": "Audio Bitrate",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 35,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "code",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_fps\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Average",
+              "queryType": "range",
+              "refId": "A",
+              "step": ""
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "code",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_fps_min\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Min",
+              "queryType": "range",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "code",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.video_fps_max\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Max",
+              "queryType": "range",
+              "refId": "C"
+            }
+          ],
+          "title": "Frames Per Second",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "id": 31,
+          "options": {
+            "displayMode": "gradient",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "builder",
+              "expr": "sum by(disconnect_reason) (count_over_time({filename=\"/EventsServer/event.log\"} | json | line_format `{{.disconnect_reason}}` | __error__=`` [$__range]))",
+              "legendFormat": "{{disconnect_reason}}",
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "Disconnect Reasons",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "id": 36,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "code",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.loading_duration\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Average",
+              "queryType": "range",
+              "refId": "A",
+              "step": ""
+            }
+          ],
+          "title": "Loading Times",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "id": 37,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "editorMode": "code",
+              "expr": "avg(avg_over_time({job=\"logs\"} | json value=\"stat_values.session_duration\" | line_format `{{.value}}` | unwrap value | __error__=`` [10m]))",
+              "hide": false,
+              "legendFormat": "Average",
+              "queryType": "range",
+              "refId": "A",
+              "step": ""
+            }
+          ],
+          "title": "Session Times",
+          "type": "timeseries"
+        }
+      ],
+      "refresh": "",
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-15m",
+        "to": "now"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "Unreal Engine Metrics",
+      "uid": "LZLaM4tnk",
+      "version": 1,
+      "weekStart": ""
+    }
+
+
+
+
+---
+
+# Prometheus API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-grafana
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/target-type: instance
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: metrics-grafana
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+
+---
+# REST API Ingress Rules
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metrics-grafana
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-grafana
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/group.name: test
+    #alb.ingress.kubernetes.io/group.name: demo-do-not-delete
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-buffering: 'off'
+    nginx.ingress.kubernetes.io/proxy-request-buffering: 'off'
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # {{ if ne .Values.ingress.hostname "" }}
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-2:085996170456:certificate/ff1007fb-122f-451f-8278-bdbc515496b4
+    # alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    # {{ end }}
+spec:
+  rules:
+  # tls:
+  #   - hosts:
+  #       - sps.tw-testing.com
+  #     secretName: cert-tls-metrics-api
+  # rules:
+  #   - host: sps.tw-testing.com
+  - http:
+  # {{ end }}
+      paths:
+      - backend:
+          service:
+            name: metrics-grafana
+            port:
+              number: 80
+        path: /grafana
+        pathType: Prefix
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-grafana
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metrics-grafana
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: metrics-grafana
+    spec:
+      volumes:
+        - name: metrics-grafana-dashboard-config
+          configMap:
+            name: metrics-grafana
+            items:
+              - key: ue_dashboard.json
+                path: ue_dashboard.json
+        - name: metrics-grafana-dashboard
+          configMap:
+            name: metrics-grafana
+            items:
+              - key: dashboard-config.yaml
+                path: grafana-dashboard-config.yaml
+        - name: metrics-grafana-datasource
+          configMap:
+            name: metrics-grafana
+            items:
+              - key: datasource-config.yaml
+                path: grafana-datasource-config.yaml
+        - name: metrics-grafana-config
+          configMap:
+            name: metrics-grafana
+            items:
+              - key: grafana.ini
+                path: grafana.ini
+      containers:
+        - name: metrics-grafana
+          image: grafana/grafana:10.4.1
+          volumeMounts:
+            - name: metrics-grafana-dashboard
+              mountPath: /etc/grafana/provisioning/dashboards/
+            - name: metrics-grafana-datasource
+              mountPath: /etc/grafana/provisioning/datasources/
+            - name: metrics-grafana-dashboard-config
+              mountPath: /etc/dashboards/
+            - name: metrics-grafana-config
+              mountPath: /etc/grafana/
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+                  - key: sps.tensorworks.com.au/cpu
+                    operator: In
+                    values:
+                      - 'true'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

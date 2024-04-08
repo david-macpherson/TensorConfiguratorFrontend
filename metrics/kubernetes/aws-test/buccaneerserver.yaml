@@ -1,0 +1,146 @@
+## Buccanneer storeage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metrics-buccaneer
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: gp2
+
+
+
+---
+
+
+# Buccanneer API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-buccaneer
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/target-type: instance
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: metrics-buccaneer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+
+---
+
+# REST API Ingress Rules
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metrics-buccaneer
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-buccaneer
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/group.name: test
+    #alb.ingress.kubernetes.io/group.name: demo-do-not-delete
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=3600
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "500"
+    nginx.ingress.kubernetes.io/proxy-buffering: 'off'
+    nginx.ingress.kubernetes.io/proxy-request-buffering: 'off'
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # {{ if ne .Values.ingress.hostname "" }}
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-2:085996170456:certificate/ff1007fb-122f-451f-8278-bdbc515496b4
+    # alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    # {{ end }}
+spec:
+  rules:
+  # tls:
+  #   - hosts:
+  #       - sps.tw-testing.com
+  #     secretName: cert-tls-metrics-api
+  # rules:
+  #   - host: sps.tw-testing.com
+  - http:
+  # {{ end }}
+      paths:
+      - backend:
+          service:
+            name: metrics-buccaneer
+            port:
+              number: 80
+        path: /event
+        pathType: Prefix
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-buccaneer
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-buccaneer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metrics-buccaneer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: metrics-buccaneer
+    spec:
+      volumes:
+        - name: metrics-buccaneer-data
+          persistentVolumeClaim:
+            claimName: metrics-buccaneer
+      containers:
+        - name: metrics-buccaneer
+          image: docker.io/davidmacpherson/sps-buccaneerserver:0.0.0-devel
+          volumeMounts:
+            - name: metrics-buccaneer-data
+              mountPath: /app
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+                  - key: sps.tensorworks.com.au/cpu
+                    operator: In
+                    values:
+                      - 'true'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

@@ -1,0 +1,103 @@
+# Prometheus config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metrics-prometheus-config
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-prometheus-config
+data:
+  prometheus.yaml: |
+    # my global config
+    global:
+      scrape_interval: 2s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+      evaluation_interval: 2s # Evaluate rules every 15 seconds. The default is every 1 minute.
+
+    scrape_configs:
+      - job_name: "realtime_stats"
+        static_configs:
+          - targets: ["metrics-buccaneer.default.svc.cluster.local:80"]
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-prometheus
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-prometheus
+spec:
+  ports:
+    - name: prometheus-port
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+  selector:
+    app.kubernetes.io/name: metrics-prometheus
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-prometheus
+  namespace: default
+  labels:
+    app.kubernetes.io/name: metrics-prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metrics-prometheus
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: metrics-prometheus
+    spec:
+      volumes:
+        - name: metrics-prometheus-config
+          configMap:
+            name: metrics-prometheus-config
+            items:
+              - key: prometheus.yaml
+                path: prometheus.yml
+      containers:
+        - name: metrics-prometheus
+          image: prom/prometheus
+          volumeMounts:
+            - name: metrics-prometheus-config
+              mountPath: /etc/prometheus/
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+                  - key: sps.tensorworks.com.au/cpu
+                    operator: In
+                    values:
+                      - 'true'
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
