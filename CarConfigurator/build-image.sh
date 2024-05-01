@@ -25,6 +25,7 @@ BUCCANEER_URL=""
 
 POD_DEL=false
 
+# Loop through all the flags
 while test $# -gt 0; do
   case "$1" in
     --tag)
@@ -39,6 +40,7 @@ while test $# -gt 0; do
         shift
     ;;
     --aws)
+        
         # Set the build for aws provider
         PROVIDER="aws"
         BUCCANEER_URL=$AWS_BUCCANEER
@@ -73,18 +75,17 @@ while test $# -gt 0; do
   esac
 done
 
-if [[ ! -z "$WEBSOCKET_URL" ]]; then
-    TAG=$REGISTRY/$REPO/$IMAGE:$VERSION-$PROVIDER
-fi
 
-
-if [ "$ENABLE_METRICS" = false ]; then
-    BUCCANEER_URL=""
-fi
-
-# Check if metrics has been enabled and overide the Version to use the metrics
+# Check if the metrics has been enabled
 if [ "$ENABLE_METRICS" = true ]; then
+    # Use the verison metrics as the version
     TAG=$REGISTRY/$REPO/$IMAGE:$VERSION_METRICS-$PROVIDER
+else 
+    # set the just the verison
+    TAG=$REGISTRY/$REPO/$IMAGE:$VERSION-$PROVIDER
+    
+    # Set the buccaneer url to blank
+    BUCCANEER_URL=""
 fi
 
 echo "--------------------------------"
