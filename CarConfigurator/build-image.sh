@@ -131,11 +131,11 @@ if [ "$ENABLE_METRICS" = true ]; then
     echo -e "ENABLE_METRICS=$ENABLE_METRICS" >> .env
 fi
 
-# # Build the project as dev
-# npm run build-dev
+# Build the project as dev
+npm run build-dev
 
-# # Build the docker container
-# docker build -t $TAG .
+# Build the docker container
+docker build -t $TAG .
 
-# # Push the docker container
-# docker push $TAG
+# Push the docker container
+docker push $TAG
