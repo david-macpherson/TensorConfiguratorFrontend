@@ -15,18 +15,33 @@ ENABLE_METRICS=false
 REGISTRY=docker.io
 REPO=tensorworks
 IMAGE=sps-tensorconfigurator-frontend
-VERSION=0.0.0-devel-metrics
+VERSION=0.0.0-devel
+VERSION_METRICS=0.0.0-devel-metrics
 
+TAG=""
 
 WEBSOCKET_URL=""
 BUCCANEER_URL=""
 
 POD_DEL=false
 
+# Loop through all the flags
 while test $# -gt 0; do
   case "$1" in
+    --tag)
+        # Set the tag to build to
+        shift
+        REPO=$1
+        shift
+    ;;
+    --local)
+        # Set the build for local demo flag
+        PROVIDER="local"
+        shift
+    ;;
     --aws)
-        # Set the build for coreweave demo flag
+        
+        # Set the build for aws provider
         PROVIDER="aws"
         BUCCANEER_URL=$AWS_BUCCANEER
         shift
@@ -60,8 +75,18 @@ while test $# -gt 0; do
   esac
 done
 
-TAG=$REGISTRY/$REPO/$IMAGE:$VERSION-$PROVIDER
 
+# Check if the metrics has been enabled
+if [ "$ENABLE_METRICS" = true ]; then
+    # Use the verison metrics as the version
+    TAG=$REGISTRY/$REPO/$IMAGE:$VERSION_METRICS-$PROVIDER
+else 
+    # set the just the verison
+    TAG=$REGISTRY/$REPO/$IMAGE:$VERSION-$PROVIDER
+    
+    # Set the buccaneer url to blank
+    BUCCANEER_URL=""
+fi
 
 echo "--------------------------------"
 
@@ -75,17 +100,21 @@ echo "TAG:              $TAG"
 
 echo "ENABLE_METRICS:   $ENABLE_METRICS"
 
-echo "WEBSOCKET_URL:    $WEBSOCKET_URL"
-echo "BUCCANEER_URL:    $BUCCANEER_URL"
+if [[ ! -z "$WEBSOCKET_URL" ]]; then
+    echo "WEBSOCKET_URL:    $WEBSOCKET_URL"
+fi
+
+if [[ ! -z "$BUCCANEER_URL" ]]; then
+    echo "BUCCANEER_URL:    $BUCCANEER_URL"
+fi 
 
 echo "--------------------------------"
 
-
 # Create an emtpy .env file
-echo -e "" > .env
+echo -n > .env
 
 # If the websocket url has been set then use that
-if [[ ! -z "$WEBSOCKET_URL" ]]; then 
+if [[ ! -z "$WEBSOCKET_URL" ]]; then
     echo -e "WEBSOCKET_URL=$WEBSOCKET_URL" >> .env
 fi
 
@@ -96,6 +125,8 @@ if [ "$ENABLE_METRICS" = true ]; then
     if [[ ! -z "$BUCCANEER_URL" ]]; then 
         echo -e "BUCCANEER_URL=$BUCCANEER_URL" >> .env
     fi
+
+
 
     # Set the Enable metrics
     echo -e "ENABLE_METRICS=$ENABLE_METRICS" >> .env
