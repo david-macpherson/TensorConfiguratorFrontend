@@ -1,8 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import { Config, PixelStreaming, MessageRecv, TextParameters, Flags } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
+import { Config, PixelStreaming, MessageRecv, WebRtcTCPRelayDetectedEvent } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.4';
 import { CarConfiguratorStyle, UIElementCreationMode } from 'carconfigurator-ui';
 import { SPSApplication } from "./SPSApplication";
+import { WebRtcTcpRelayDetectIndicator } from "./WebRtcTcpRelayDetectIndicator";
 
 const CarConfiguratorStyles =
 	new CarConfiguratorStyle();
@@ -28,6 +29,9 @@ class ScalablePixelStreaming extends PixelStreaming {
 };
 
 document.body.onload = function () {
+	// Create an instance to the WebRtcTcoRelayDetectIndicator
+	let webRtcTcpRelayIndicator = new WebRtcTcpRelayDetectIndicator();
+
 	// Create a config object. We default to sending the WebRTC offer from the browser as true, TimeoutIfIdle to true, AutoConnect to false and MaxReconnectAttempts to 0
 	const config = new Config({ useUrlParams: true, initialSettings: { OfferToReceive: true, TimeoutIfIdle: true, AutoConnect: false, MaxReconnectAttempts: 0, MatchViewportRes: true, MinQP: 20 } });
 
@@ -51,8 +55,17 @@ document.body.onload = function () {
 		spsApplication.showOptions();
 	})
 
+	// Handle when then webRtcTCPRelayDetected has been raised
+	stream.addEventListener('webRtcTCPRelayDetected', (event: WebRtcTCPRelayDetectedEvent) => {
+		// Show the web rtc tpc relay warning message
+		webRtcTcpRelayIndicator.ShowWarning()
+	});
+
 	stream.addEventListener("webRtcDisconnected", () => {
 		spsApplication.hideOptions();
+
+		// Remove the web rtc tpc relay warning message
+		webRtcTcpRelayIndicator.RemoveWarning()
 	})
 
 	document.body.appendChild(spsApplication.rootElement);

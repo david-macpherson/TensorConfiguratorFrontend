@@ -3,6 +3,7 @@ import { AggregatedStats, SettingFlag, TextParameters } from '@epicgames-ps/lib-
 import { LoadingOverlay } from './LoadingOverlay';
 import { SPSSignalling } from './SignallingExtension';
 import { MessageStats } from './Messages';
+import { SPS_LEGACY_SIGNALLING_PATH_WS } from './const';
 
 // For local testing. Declare a websocket URL that can be imported via a .env file that will override 
 // the signalling server URL builder.
